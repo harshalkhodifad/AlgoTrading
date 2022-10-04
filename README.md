@@ -18,13 +18,21 @@ from urllib.request import urlopen
 # or: requests.get(url).content
 
 url = "https://archives.nseindia.com/content/historical/DERIVATIVES/2022/SEP/fo30SEP2022bhav.csv.zip"
-file = ""
+file = "fo30SEP2022bhav.csv"
 
 resp = urlopen(url)
 myzip = ZipFile(BytesIO(resp.read()))
+csv = []
 for line in myzip.open(file).readlines():
-    print(line.decode('utf-8'))
+    csv.append(line.decode('utf-8'))
 
+x = list(filter(lambda y: y.split(',')[4]=='CE' and y.split(',')[1]=='NIFTY' and y.split(',')[2]=='01-Dec-2022', csv))
+closest_value(map(lambda y: float(y.split(',')[3]), x), 19030)
+
+def closest_value(input_list, input_value):
+  difference = lambda input_list : abs(input_list - input_value)
+  res = min(input_list, key=difference)
+  return res
 2. 
 
 
