@@ -10,7 +10,10 @@
 
 1. Fetch F&O
    - get_fno_list() -> ['A', 'B']
-   - get_equity_data('A', 540.6*(1.0075), 540*(1-0.0075))=> round() => Closest CE strike price, CE's close, Closest PE Strike price, PE's close
+   - get_equity_data('A', 540.6*(1.0075), 540*(1-0.0075))=> round() => 2022-10-27, Closest CE strike price, CE's close, Closest PE Strike price, PE's close
+
+  NFO,ADANIPORTS,60563,OPTSTK,2022-10-27,CE,780.0,1250.0,ADANIPORTS22OCT780CE
+  NFO,ADANIPORTS,60564,OPTSTK,2022-10-27,PE,780.0,1250.0,ADANIPORTS22OCT780PE
 
 from io import BytesIO
 from zipfile import ZipFile

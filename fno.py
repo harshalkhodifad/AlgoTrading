@@ -11,7 +11,7 @@ class FnOData:
 
     def __init__(self):
         # Download csv or check if already exist & set dict into self.csv_data
-        # self.csv_data = {}
+        self.csv_data = []
         x = datetime.datetime.now()
         now = datetime.datetime.now()
         # Change x to correct datetime based on time
@@ -20,9 +20,12 @@ class FnOData:
         # check if file exist if not fetch with url
         pass
 
-    def get_closest_ce_pe_with_strike_price(self):
+    def get_closest_ce_pe_with_strike_price(self, symbol, ce_eq_close, pe_eq_close):
+        # input - "AXISBANK", 807.00, 794.90
         # Extract values from self.csv_data
-        return 1,2,3,4
+        # Decide which expiry to pick
+        # return expiry_date, ce_strike, ce_close, pe_strike, pe_close
+        return "2022-10-27", 800.00, 5.60, 800.00, 69.95 
 
 # resp = urlopen(url)
 # myzip = ZipFile(BytesIO(resp.read()))
