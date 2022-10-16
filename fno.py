@@ -12,6 +12,7 @@ class FnOData:
     def __init__(self):
         # Download csv or check if already exist & set dict into self.csv_data
         self.csv_data = []
+        self.next_expiry_date = datetime.datetime.now()
         x = datetime.datetime.now()
         now = datetime.datetime.now()
         # Change x to correct datetime based on time
@@ -25,7 +26,10 @@ class FnOData:
         # Extract values from self.csv_data
         # Decide which expiry to pick
         # return expiry_date, ce_strike, ce_close, pe_strike, pe_close
-        return "2022-10-27", 800.00, 5.60, 800.00, 69.95 
+        return "2022-10-27", 800.00, 5.60, 800.00, 69.95
+
+    def get_fno_list(self):
+        return ["AXISBANK"]
 
 # resp = urlopen(url)
 # myzip = ZipFile(BytesIO(resp.read()))
