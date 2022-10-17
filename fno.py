@@ -43,7 +43,7 @@ class FnOData:
         # print(datetime_expirydate,ce_strike,ce_close,pe_strike,pe_close)
         # Decide which expiry to pick
         # return expiry_date, ce_strike, ce_close, pe_strike, pe_close
-        return datetime_expirydate, ce_strike, ce_close, pe_strike, pe_close
+        return datetime_expirydate.strftime("%Y-%m-%d"), ce_strike, ce_close, pe_strike, pe_close
 
     def get_fno_list(self):
         fnolist = []
@@ -57,6 +57,7 @@ class FnOData:
     def _download_fno_data_from_nse(self):
         # TODO: Use header mapping while accessing by index - as csv header can change
         now = datetime.datetime.now()
+        if datetime.datetime
         x = now - datetime.timedelta(days=3)
         file = FILE_NAME.format(x.strftime("%d%b%Y").upper())
         local_file_path = "resources/{}bhav.csv".format(file, file)
