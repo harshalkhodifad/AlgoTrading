@@ -30,14 +30,29 @@ class FnOData:
         for i,j in enumerate(x):
             if float(x[i].split(',')[3]) == ce_strike and datetime.datetime.now().strftime('%b') in x[i].split(',')[2]:
                 ce_close = x[i].split(',')[8]
+                expiry_date = x[i].split(',')[2]
+        datetime_expirydate = datetime.datetime.strptime(expiry_date, '%d-%b-%Y').date()
 
-        print(ce_strike,ce_close)
+        z = list(filter(lambda y: y.split(',')[4] == "PE" and y.split(',')
+        [1] == symbol, self.csv_data))
+        pe_strike = closest_value(map(lambda y: float(y.split(',')[3]), z), pe_eq_close)
+        for i,j in enumerate(z):
+            if float(z[i].split(',')[3]) == pe_strike and datetime.datetime.now().strftime('%b') in z[i].split(',')[2]:
+                pe_close = z[i].split(',')[8]
+
+        # print(datetime_expirydate,ce_strike,ce_close,pe_strike,pe_close)
         # Decide which expiry to pick
         # return expiry_date, ce_strike, ce_close, pe_strike, pe_close
-        return "2022-10-27", 800.00, 5.60, 800.00, 69.95
+        return datetime_expirydate, ce_strike, ce_close, pe_strike, pe_close
 
     def get_fno_list(self):
-        return ["AXISBANK"]
+        fnolist = []
+        for i,j in enumerate(self.csv_data):
+            if self.csv_data[i].split(',')[1] not in fnolist and self.csv_data[i].split(',')[0] == "OPTSTK":
+                # import ipdb; ipdb.set_trace()
+                fnolist.append(self.csv_data[i].split(',')[1])
+                
+        return fnolist
 
     def _download_fno_data_from_nse(self):
         # TODO: Use header mapping while accessing by index - as csv header can change
@@ -62,9 +77,8 @@ class FnOData:
         pass
 
 def main():
-    import ipdb; ipdb.set_trace()
     fno = FnOData()
-    fno.get_closest_ce_pe_with_strike_price("AXISBANK", 807.00, 794.90)
+    fno.get_fno_list()
     
 
 if __name__ == "__main__":
