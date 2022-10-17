@@ -57,7 +57,10 @@ class FnOData:
     def _download_fno_data_from_nse(self):
         # TODO: Use header mapping while accessing by index - as csv header can change
         now = datetime.datetime.now()
-        x = now - datetime.timedelta(days=3)
+        if int(datetime.datetime.now().strftime("%d")) == 17:
+            x = now - datetime.timedelta(days=3)
+        else:
+            x = now - datetime.timedelta(days=1)
         file = FILE_NAME.format(x.strftime("%d%b%Y").upper())
         local_file_path = "resources/{}bhav.csv".format(file, file)
         url = GENERIC_URL.format(x.year, x.strftime("%b").upper(), x.strftime("%d%b%Y").upper())
