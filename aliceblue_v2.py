@@ -1,4 +1,3 @@
-
 import json
 import requests
 import threading
@@ -11,8 +10,6 @@ from collections import namedtuple
 import dateutil.parser
 import datetime
 import os
-
-from .__version__ import __version__, __title__
 
 logger = logging.getLogger(__name__)
 
@@ -118,8 +115,8 @@ class Alice:
         self.__subscribes = {}
         self.root_url = self._root_url
 
-        self.api_name = __title__
-        self.version = __version__
+        self.api_name = "AliceBlue_V2"
+        self.version = "1.0.1"
 
     def _request(self, sub_url, req_type, data=None):
         headers = {
@@ -294,7 +291,7 @@ class Alice:
             values += f"{i}#"
         self.__ws_send(json.dumps({
             "k": values[:-1],
-            "t": 'd'
+            "t": 't'
         }))
 
     def unsubscribe(self, instrument):
@@ -475,26 +472,27 @@ class Alice:
         all_Exchanges = ["INDICES", "NSE", "BSE", "NFO", "BCD", "MCX", "CDS", "BFO"]
         for i in all_Exchanges:
             if self.master_contract is None:
-                self.master_contract = pd.read_csv(
-                    f"https://v2api.aliceblueonline.com/restpy/static/contract_master/{i}.csv")
-                self.master_contract.columns = self.master_contract.columns.str.title()
-                self.master_contract["Trading Symbol"] = self.master_contract["Symbol"]
-            else:
-                self.master_contract = pd.concat([self.master_contract, pd.read_csv(
-                    f"https://v2api.aliceblueonline.com/restpy/static/contract_master/{i}.csv")], ignore_index=True)
-                self.master_contract.columns = self.master_contract.columns.str.title()
-        self.master_contract = self.master_contract[self.master_contract["Exch"] != ""]
-        self.master_contract["Expiry Date"] = self.master_contract["Expiry Date"].apply(
-            lambda x: dateutil.parser.parse(str(x)).date() if str(x).strip() != "nan" and bool(x) else x)
-        self.master_contract = self.master_contract.rename(
-            columns={"Exch": "exchange", "Symbol": "name", "Token": "instrument_token",
-                     "Trading Symbol": "trading_symbol", "Instrument Type": "segment", "Lot Size": "lot_size",
-                     "Strike Price": "strike", "Option Type": "instrument_type", "Expiry Date": "expiry"})
-        self.master_contract = self.master_contract[
-            ["exchange", "name", "instrument_token", "segment", "expiry", "instrument_type", "strike", "lot_size",
-             "trading_symbol"]]
-        if bool(to_csv):
-            self.master_contract.to_csv("Exchange.csv", index=False)
+                self.master_contract = pd.read_csv("Exchange.csv")
+                # self.master_contract = pd.read_csv(
+                #     f"https://v2api.aliceblueonline.com/restpy/static/contract_master/{i}.csv")
+                # self.master_contract.columns = self.master_contract.columns.str.title()
+                # self.master_contract["Trading Symbol"] = self.master_contract["Symbol"]
+            # else:
+            #     self.master_contract = pd.concat([self.master_contract, pd.read_csv(
+            #         f"https://v2api.aliceblueonline.com/restpy/static/contract_master/{i}.csv")], ignore_index=True)
+            #     self.master_contract.columns = self.master_contract.columns.str.title()
+        # self.master_contract = self.master_contract[self.master_contract["Exch"] != ""]
+        # self.master_contract["Expiry Date"] = self.master_contract["Expiry Date"].apply(
+        #     lambda x: dateutil.parser.parse(str(x)).date() if str(x).strip() != "nan" and bool(x) else x)
+        # self.master_contract = self.master_contract.rename(
+        #     columns={"Exch": "exchange", "Symbol": "name", "Token": "instrument_token",
+        #              "Trading Symbol": "trading_symbol", "Instrument Type": "segment", "Lot Size": "lot_size",
+        #              "Strike Price": "strike", "Option Type": "instrument_type", "Expiry Date": "expiry"})
+        # self.master_contract = self.master_contract[
+        #     ["exchange", "name", "instrument_token", "segment", "expiry", "instrument_type", "strike", "lot_size",
+        #      "trading_symbol"]]
+        # if bool(to_csv):
+        #     self.master_contract.to_csv("Exchange.csv", index=False)
         print("Completed")
         return self.master_contract
 

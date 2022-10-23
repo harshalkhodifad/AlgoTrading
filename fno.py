@@ -26,6 +26,7 @@ class FnOData:
             res = min(input_list, key=difference)
             return res
 
+        # import ipdb; ipdb.set_trace()
         ce_strike = closest_value(map(lambda y: float(y.split(',')[3]), x), ce_eq_close)
         for i,j in enumerate(x):
             if float(x[i].split(',')[3]) == ce_strike and datetime.datetime.now().strftime('%b') in x[i].split(',')[2]:
@@ -46,12 +47,11 @@ class FnOData:
         return datetime_expirydate.strftime("%Y-%m-%d"), ce_strike, ce_close, pe_strike, pe_close
 
     def get_fno_list(self):
-        fnolist = []
-        for i,j in enumerate(self.csv_data):
-            if self.csv_data[i].split(',')[1] not in fnolist and self.csv_data[i].split(',')[0] == "OPTSTK":
-                # import ipdb; ipdb.set_trace()
-                fnolist.append(self.csv_data[i].split(',')[1])
-                
+        fnolist = ["AXISBANK", "ADANIPORTS", "TATAMOTORS", "TATASTEEL"]
+        # fnolist = []
+        # for i,j in enumerate(self.csv_data):
+        #     if self.csv_data[i].split(',')[1] not in fnolist and self.csv_data[i].split(',')[0] == "OPTSTK":
+        #         fnolist.append(self.csv_data[i].split(',')[1])
         return fnolist
 
     def _download_fno_data_from_nse(self):
@@ -64,7 +64,7 @@ class FnOData:
         file = FILE_NAME.format(x.strftime("%d%b%Y").upper())
         local_file_path = "resources/{}bhav.csv".format(file, file)
         url = GENERIC_URL.format(x.year, x.strftime("%b").upper(), x.strftime("%d%b%Y").upper())
-        if os.path.isfile(local_file_path):
+        if not os.path.isfile(local_file_path):
         # check if file exist if not fetch with url
             resp = urlopen(url)
             myzip = ZipFile(BytesIO(resp.read()))
