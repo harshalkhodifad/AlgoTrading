@@ -32,7 +32,7 @@ else:
     yesterday = today - datetime.timedelta(days=1)
     y_fr, y_to = yesterday + datetime.timedelta(hours=15, minutes=29), \
                                    yesterday + datetime.timedelta(hours=15, minutes=31)
-    t_fr, t_to = today, today + datetime.timedelta(hours=16)
+    t_fr, t_to = today, today + datetime.timedelta(hours=15, minutes=45)
     fno_list, eqq_list, expiry = broker.get_nfo_data(today)
     eqq_list = list(eqq_list)
 
