@@ -1,48 +1,78 @@
-def get_instrument_for_fno(self, exchange, name, expiry_date, is_fut=True, strike=None, is_CE=False):
-    if self.master_contract is None:
-        raise Exception("Download Master Contract First")
-    contract = self.master_contract[self.master_contract['exchange'] == exchange]
-    contract = contract[contract["name"] == name]
-    contract = contract[contract["expiry"] == expiry_date]
-    contract = contract[contract["instrument_type"] == ("XX" if bool(is_fut) else ("CE" if bool(is_CE) else "PE"))]
-    if strike is not None and not bool(is_fut):
-        contract = contract[contract["strike"] == float(strike)]
-    if len(contract) == 0 or len(contract) > 1:
-        raise Exception("Provide valid data")
-    return Instrument(list(contract['exchange'])[0], list(contract['instrument_token'])[0],
-                      list(contract['trading_symbol'])[0], list(contract['name'])[0],
-                      list(contract['expiry'])[0], list(contract['lot_size'])[0])
+import logging
+import datetime
+from typing import List
+
+from alice_blue import AliceBlue, Instrument
+from alice_blue import LiveFeedType, HistoricalDataType
+
+from models import Script, HistoricalData
+from utils import round_off
+import csv
+import time
+from dateutil import relativedelta
+
+from constants import *
+
+logger = logging.getLogger(__name__)
 
 
-def get_historical(self, instrument, from_datetime, to_datetime, interval, indices=False):
-    # intervals = ["1", "2", "3", "4", "5", "10", "15", "30", "60", "120", "180", "240", "D", "1W", "1M"]
-    params = {"symbol": instrument.token,
-              "exchange": instrument.exchange if not indices else f"{instrument.exchange}::index",
-              "from": str(int(from_datetime.timestamp())),
-              "to": str(int(to_datetime.timestamp())),
-              "resolution": interval,
-              "user": self.user_id}
-    lst = requests.get(
-        f"https://a3.aliceblueonline.com/rest/AliceBlueAPIService/chart/history?", params=params).json()
-    df = pd.DataFrame(lst)
-    df = df.rename(columns={'t': 'datetime', 'o': 'open', 'h': 'high', 'l': 'low', 'c': 'close', 'v': 'volume'})
-    df = df[['datetime', 'open', 'high', 'low', 'close', 'volume']]
-    df["datetime"] = df["datetime"].apply(lambda x: datetime.datetime.fromtimestamp(x))
-    return df
+class Broker:
 
-    def get_master_contract(self, exchange=None):
-        if self.master_contract is None:
-            try:
-                self.master_contract = pd.read_csv("Exchange.csv")
-                self.master_contract["expiry"] = self.master_contract["expiry"].apply(
-                    lambda x: dateutil.parser.parse(str(x)).date() if str(x).strip() != "nan" and bool(x) else x)
-            except:
-                self.download_master_contract()
-        if exchange is None:
-            return self.master_contract
-        else:
-            contract = self.master_contract[self.master_contract['exchange'] == exchange]
-            if len(contract) == 0:
-                raise Exception("Provide valid data")
-            else:
-                return contract
+    def __init__(self):
+        self.client = AliceClient()
+
+    def get_script_info(self, eq_instrument) -> Script:
+        script_details = self.client.get_script_info(eq_instrument)
+        # print(script_details)
+        logger.info(script_details)
+        return Script(eq_instrument, script_details=self.client.get_script_info(eq_instrument))
+
+    def get_instrument_by_symbol(self, exch, symbol):
+        return self.client.get_instrument_by_symbol(exch, symbol)
+
+    def get_nfo_data(self, now):
+        next_month = now + relativedelta.relativedelta(months=1)
+        fno_data = list(
+            filter(lambda x: x.instrument_type == "OPTSTK" and x.exchange == "NFO"
+                             and ((
+                                              now.month == x.expiry.month and now.year == x.expiry.year and now.day != x.expiry.day)
+                                  or (next_month.month == x.expiry.month and next_month.year == x.expiry.year)),
+                   self.client.get_master_contract('NFO').values()))
+
+        eq_set_keys = set()
+        eq_set = set()
+        for instrument in fno_data:
+            if not instrument.eq in eq_set_keys:
+                eq_set.add(instrument)
+                eq_set_keys.add(instrument.eq)
+        return fno_data, eq_set, fno_data[0].expiry
+
+    def get_historical_data(self, instrument, fr, to) -> List[HistoricalData]:
+        l = self.client.historical_data(instrument, fr, to, HistoricalDataType.Minute).get('result')
+        ll = []
+        for x in l:
+            ll.append(HistoricalData(x))
+        return ll
+
+    def subscribe(self, instruments: List[Instrument], callback_fn):
+        self.client.subscribe_instruments(instruments, callback_fn)
+
+    def unsubscribe(self, instruments: List[Instrument]):
+        self.client.unsubscribe_instruments(instruments)
+
+
+class AliceClient(AliceBlue):
+
+    def __init__(self):
+        super().__init__(username=USERNAME, session_id=AliceBlue.login_and_get_sessionID(username=USERNAME,
+                                                                                         password=PASSWORD,
+                                                                                         twoFA=DOB,
+                                                                                         app_id=APP_SECRET,
+                                                                                         api_secret=APP_API_KEY))
+
+    def subscribe_instruments(self, instruments: List[Instrument], callback_fn):
+        self.start_websocket(subscribe_callback=callback_fn)
+        self.subscribe(instruments, LiveFeedType.TICK_DATA)
+
+    def unsubscribe_instruments(self, instruments):
+        self.unsubscribe(instruments, LiveFeedType.TICK_DATA)

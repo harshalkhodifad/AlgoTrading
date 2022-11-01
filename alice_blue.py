@@ -191,10 +191,10 @@ class AliceBlue:
                     hdr = {"Content-Type": "application/json",
                            "Authorization": f"Bearer {username} {d['session_id']}"}
                     r = requests.get(AliceBlue.__urls["profile"], headers=hdr, data=json.dumps(data))
-                    logging.info(f"Get Account details response {r.text}")
+                    logger.debug(f"Get Account details response {r.text}")
                     if (r.status_code == 200):
                         if ("stat" not in r.json()):
-                            logging.info(f"Using stored session_id {d['session_id']}")
+                            logger.debug(f"Using stored session_id {d['session_id']}")
                             return d['session_id']
             with open(tmp_file, 'w') as fo:
                 d = {"session_id": ""}
@@ -204,7 +204,7 @@ class AliceBlue:
         # Get Encryption Key
         data = {"userId": username}
         r = requests.post(AliceBlue.__urls['getEncKey'], headers=header, json=data)
-        logging.info(f"Get Encryption Key response {r.text}")
+        logger.debug(f"Get Encryption Key response {r.text}")
         encKey = r.json()["encKey"]
 
         # Web Login
@@ -213,7 +213,7 @@ class AliceBlue:
         data = {"userId": username,
                 "userData": checksum}
         r = requests.post(AliceBlue.__urls["webLogin"], json=data)
-        logging.info(f"Web Login response {r.text}")
+        logger.debug(f"Web Login response {r.text}")
 
         # Web Login 2FA
         data = {"answer1": twoFA,
@@ -222,24 +222,24 @@ class AliceBlue:
                 "userId": username,
                 "vendor": app_id}
         r = requests.post(AliceBlue.__urls["twoFA"], json=data)
-        logging.info(f"Web Login 2FA response {r.text}")
+        logger.debug(f"Web Login 2FA response {r.text}")
         isAuthorized = r.json()['isAuthorized']
         authCode = parse_qs(urlparse(r.json()["redirectUrl"]).query)['authCode'][0]
-        logging.info(f"isAuthorized {isAuthorized}")
-        logging.info(f"authCode {authCode}")
+        logger.debug(f"isAuthorized {isAuthorized}")
+        logger.debug(f"authCode {authCode}")
 
         # Get API Encryption Key
         data = {"userId": username}
         r = requests.post(AliceBlue.__urls["apiGetEncKey"], headers=header, data=json.dumps(data))
-        logging.info(f"Get API Encryption Key response {r.text}")
+        logger.debug(f"Get API Encryption Key response {r.text}")
 
         # Get User Details/Session ID
         checksum = hashlib.sha256(f"{username}{authCode}{api_secret}".encode()).hexdigest()
         data = {"checkSum": checksum}
         r = requests.post(AliceBlue.__urls["sessionID"], headers=header, data=json.dumps(data))
-        logging.info(f"Session ID response {r.text}")
+        logger.debug(f"Session ID response {r.text}")
         session_id = r.json()['userSession']
-        logging.info(f"Session ID is {session_id}")
+        logger.debug(f"Session ID is {session_id}")
 
         # Authorize vendor app
         if (isAuthorized == False):
@@ -458,7 +458,7 @@ class AliceBlue:
         # message = '{"t":"tf","e":"NSE","tk":"1594","ft":"1662025326","v":"7399482","bp1":"1464.25","sp1":"1464.35","bq1":"460","sq1":"11"}'
         # message = '{"t":"df","e":"NSE","tk":"1594","ft":"1662025327","v":"7400196","ltt":"15:12:07","tbq":"510593","tsq":"2364472","bp1":"1464.55","sp1":"1464.90","bp2":"1464.30","sp2":"1464.95","bp3":"1464.25","sp3":"1465.00","bp4":"1464.20","sp4":"1465.05","bp5":"1464.15","sp5":"1465.10","bq1":"1","sq1":"301","bq2":"598","sq2":"61","bq3":"83","sq3":"3573","bq4":"175","sq4":"300","bq5":"482","sq5":"51","bo2":"5","so2":"4","bo3":"2","so3":"42","bo4":"3","so4":"1","bo5":"5","so5":"2"}'
         # message = '{"t":"df","e":"NSE","tk":"1594","ft":"1662025324","v":"7397757","ltq":"2","ltt":"15:12:04","tbq":"513958","tsq":"2373240","sp1":"1464.95","sp2":"1465.00","sp3":"1465.05","sp4":"1465.10","sp5":"1465.15","bq1":"275","sq1":"37","sq2":"3472","sq3":"300","sq4":"26","sq5":"110","bo1":"5","so1":"8","so2":"40","so3":"1","so4":"2","so5":"4"}'
-        # logging.info(f"message - {message}")
+        # logger.debug(f"message - {message}")
         if (
                 type(ws) is not websocket.WebSocketApp):  # This workaround is to solve the websocket_client's compatiblity issue of older versions. ie.0.40.0 which is used in upstox. Now this will work in both 0.40.0 & newer version of websocket_client
             message = ws
@@ -607,7 +607,7 @@ class AliceBlue:
         else:
             return self.__api_call_helper('orderHistory', Requests.POST, {'nestOrderNumber': order_id})
 
-    def get_scrip_info(self, instrument):
+    def get_script_info(self, instrument):
         """ Get scrip information """
         data = {'exch': instrument.exchange, 'symbol': instrument.token}
         return self.__api_call_helper('scripDetails', Requests.POST, data)
@@ -965,12 +965,12 @@ class AliceBlue:
                 d = json.loads(fo.read())
                 if (datetime.datetime.now(pytz.timezone("Asia/Kolkata")).date() == datetime.datetime.strptime(
                         d["contract_date"], "%d-%m-%Y").date()):
-                    logger.info(f'Took master contracts from local for exchange: {exchange}')
+                    logger.debug(f'Took master contracts from local for exchange: {exchange}')
                     body = d
                     present = True
         # if not download from alice server
         if (present == False):
-            logger.info(f'Downloading master contracts for exchange: {exchange}')
+            logger.debug(f'Downloading master contracts for exchange: {exchange}')
             body = self.__api_call_helper('master_contract', Requests.GET, params={'exchange': exchange})
             # Write to temp file
             with open(tmp_file, 'w') as fo:
