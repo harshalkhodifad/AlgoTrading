@@ -195,7 +195,11 @@ class BackTestScript:
 
     def __repr__(self):
         # return f"BackTestScript: {self.__dict__} PNL: {self.pnl}"
-        return "{} Symbol:{}, PnL:{}, entry time:{}, entry:{}, exit time:{}, exit:{} || SL: {}, Targets: {}\n\n"\
-            .format(self.entry_type, self.current_position_symbol, round_off(self.pnl),
+        # return "{} Symbol:{}, PnL:{}, entry time:{}, entry:{}, exit time:{}, exit:{} || SL: {}, Targets: {}\n\n"\
+        #     .format(self.entry_type, self.current_position_symbol, round_off(self.pnl),
+        #             self.entry_time.strftime("%H:%M:%S"), round_off(self.entry),
+        #             self.exit_time.strftime("%H:%M:%S"), round_off(self.exit), round_off(self.sl), list(map(round_off, self.targets)))
+        return "Symbol:{}, PnL:{}, entry time:{}, entry:{}, exit time:{}, exit:{}" \
+            .format(self.current_position_symbol, round_off(self.pnl),
                     self.entry_time.strftime("%H:%M:%S"), round_off(self.entry),
-                    self.exit_time.strftime("%H:%M:%S"), round_off(self.exit), round_off(self.sl), list(map(round_off, self.targets)))
+                    self.exit_time.strftime("%H:%M:%S"), round_off(self.exit))

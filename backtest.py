@@ -1,3 +1,6 @@
+import configurations
+import logging
+
 import datetime
 import os.path
 import pickle
@@ -8,7 +11,7 @@ from alice_blue import HistoricalDataType, Instrument
 from models import *
 from utils import *
 
-print("Started: {}".format(datetime.datetime.now()))
+# print("Started: {}".format(datetime.datetime.now()))
 
 scripts = {
 
@@ -21,13 +24,14 @@ test_instrument = Instrument("NFO", "OPTSTK", 65556, "AXISBANK22NOV910CE", "AXIS
 # one by one script
 # multiple targets
 
-today = datetime.datetime(2022, 10, 28)
+logger = logging.getLogger("BACKTEST")
+today = datetime.datetime(2022, 11, 3)
 file_name = today.strftime("resources/backtest_data_%Y-%m-%d.pickle")
 if os.path.isfile(file_name):
-    print("Reading from file")
+    # logger.info("Reading from file")
     scripts = read_file(file_name)
 else:
-    print("Fetching data")
+    # logger.info("Fetching data")
     broker = Broker()
     yesterday = today - datetime.timedelta(days=1)
     y_fr, y_to = yesterday + datetime.timedelta(hours=15, minutes=29), \
@@ -37,7 +41,7 @@ else:
     eqq_list = list(eqq_list)
 
     for i, instrument in enumerate(eqq_list):
-        print("i: ", i)
+        logger.info("i: " + str(i))
         try:
             eq = broker.get_instrument_by_symbol("NSE", instrument.eq)
             eq_data = broker.get_historical_data(eq, y_fr, y_to)
@@ -55,12 +59,12 @@ else:
                                   derived_pe_close, ce_historical_data, pe_historical_data)
             scripts.update({eq.symbol: data})
         except Exception as e:
-            print(instrument)
-            print(e)
+            logger.info(instrument)
+            logger.info(e)
     write_file(scripts, file_name)
 
-print(len(scripts))
-print("Ended: {}".format(datetime.datetime.now()))
+# logger.info(len(scripts))
+# logger.info("Ended: {}".format(datetime.datetime.now()))
 margin_used = 0
 
 
@@ -71,7 +75,7 @@ def exit_logic(script: BackTestScript, data: HistoricalData, last_candle: bool):
         script.exit = script.sl
         script.exit_time = data.time
         margin_used += script.entry * script.lot
-        print(script)
+        logger.info(script)
         return True
     if script.active_position and script.targets[script.tg_i] <= data.high:
         if script.tg_i == 2:
@@ -79,7 +83,7 @@ def exit_logic(script: BackTestScript, data: HistoricalData, last_candle: bool):
             script.exit = script.targets[script.tg_i]
             script.exit_time = data.time
             margin_used += script.entry * script.lot
-            print(script)
+            logger.info(script)
             return True
         if data.high >= script.targets[script.tg_i] * 1.05 and script.tg_i != 2:
             script.sl = script.targets[script.tg_i]
@@ -89,7 +93,7 @@ def exit_logic(script: BackTestScript, data: HistoricalData, last_candle: bool):
         script.exit = data.close
         script.exit_time = data.time
         margin_used += script.entry * script.lot
-        print(script)
+        logger.info(script)
         return True
     return False
 
@@ -166,8 +170,9 @@ for key in scripts.keys():
             losses += 1
         pnl += script.pnl
 
-print("Wins: {}, Losses: {}, PNL: {}, Margin Used: {}, Gain: {}%".format(wins, losses, pnl, margin_used,
-                                                                          round_off(pnl*100/margin_used)))
+# logger.info("Wins: {}, Losses: {}, PNL: {}, Margin Used: {}, Gain: {}%".format(wins, losses, pnl, margin_used,
+#                                                                           round_off(pnl*100/margin_used)))
+logger.info("Wins: {}, Losses: {}, PNL: {}".format(wins, losses, round_off(pnl)))
 
 
 def main():
