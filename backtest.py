@@ -25,7 +25,7 @@ test_instrument = Instrument("NFO", "OPTSTK", 65556, "AXISBANK22NOV910CE", "AXIS
 # multiple targets
 
 logger = logging.getLogger("BACKTEST")
-today = datetime.datetime(2022, 11, 3)
+today = datetime.datetime(2022, 11, 4)
 file_name = today.strftime("resources/backtest_data_%Y-%m-%d.pickle")
 if os.path.isfile(file_name):
     # logger.info("Reading from file")
@@ -33,7 +33,7 @@ if os.path.isfile(file_name):
 else:
     # logger.info("Fetching data")
     broker = Broker()
-    yesterday = today - datetime.timedelta(days=1)
+    yesterday = today - datetime.timedelta(days=3 if today.isoweekday() == 1 else 1)
     y_fr, y_to = yesterday + datetime.timedelta(hours=15, minutes=29), \
                                    yesterday + datetime.timedelta(hours=15, minutes=31)
     t_fr, t_to = today, today + datetime.timedelta(hours=15, minutes=45)
@@ -108,6 +108,7 @@ def backtest_script(script: BackTestScript, ce: bool):
     script.sl = entry * 0.95
     script.targets = [close * (1 + 0.16), close * (1 + 0.24), close * (1 + 0.35)]
     script.tg_i = 0
+    is_first = True
 
     for i, data in enumerate(historical_data):
         script.day_low = min(script.day_low, data.low)
@@ -115,6 +116,9 @@ def backtest_script(script: BackTestScript, ce: bool):
         if script.day_low < close:
             if script.day_low >= fail_low and not script.active_position:  # REVISED 1
                 if not script.active_position and data.low <= script.day_low * 1.1 <= data.high:
+                    if is_first:
+                        is_first = False
+                        continue
                     script.entry_type = "REVISED 1"
                     script.current_position_symbol = symbol
                     script.active_position = True
@@ -123,6 +127,9 @@ def backtest_script(script: BackTestScript, ce: bool):
                     script.entry_time = data.time
             if script.day_low < fail_low and not script.active_position:   # REVISED 2
                 if not script.active_position and data.low <= script.day_low * 1.12 <= data.high:
+                    if is_first:
+                        is_first = False
+                        continue
                     script.entry_type = "REVISED 2"
                     script.current_position_symbol = symbol
                     script.active_position = True
@@ -131,6 +138,9 @@ def backtest_script(script: BackTestScript, ce: bool):
                     script.entry_time = data.time
         else:   # REGULAR
             if not script.active_position and data.low <= entry <= data.high:
+                if is_first:
+                    is_first = False
+                    continue
                 script.entry_type = "REGULAR"
                 script.current_position_symbol = symbol
                 script.active_position = True
@@ -173,6 +183,7 @@ for key in scripts.keys():
 # logger.info("Wins: {}, Losses: {}, PNL: {}, Margin Used: {}, Gain: {}%".format(wins, losses, pnl, margin_used,
 #                                                                           round_off(pnl*100/margin_used)))
 logger.info("Wins: {}, Losses: {}, PNL: {}".format(wins, losses, round_off(pnl)))
+print("Wins: {}, Losses: {}, PNL: {}".format(wins, losses, round_off(pnl)))
 
 
 def main():
