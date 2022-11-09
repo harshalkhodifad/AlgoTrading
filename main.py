@@ -35,7 +35,6 @@ square_off_in_progress = False
 
 def callback(script):
     global square_off_in_progress
-    print(script)
     algo.process(script, square_off_in_progress)
 
 
