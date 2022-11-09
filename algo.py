@@ -125,10 +125,11 @@ class Algorithm:
             position_mutex.acquire()
             for key in positions_db.keys():
                 for position in positions_db[key].values():
-                    position.exit_price = position.script.ltp
-                    position.exit_time = now
-                    position.closed = True
-                    logger.info("Square Off: {}".format(position))
+                    if not position.closed:
+                        position.exit_price = position.script.ltp
+                        position.exit_time = now
+                        position.closed = True
+                        logger.info("Square Off: {}".format(position))
         finally:
             position_mutex.release()
 
