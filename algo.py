@@ -21,10 +21,8 @@ class Algorithm:
     def process(self, script: dict, square_off_in_progress: bool):
         if square_off_in_progress:
             return
-        print(script)
         script = Script(instrument=script.get('instrument'), subscription_details=script)
         script = self.position_manager.update_script(script)
-        print(script)
         script_lock = self.position_manager.get_or_create_script_lock(script.symbol)
         position_lock = self.position_manager.get_or_create_position_lock(script.symbol)
         try:
