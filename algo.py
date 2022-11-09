@@ -108,9 +108,7 @@ class Algorithm:
             sl = round_off(position.entry_price * (1 - 0.05), position.script.tick_size)
 
         if ltp <= sl:
-            position.exit_price = ltp
-            position.exit_time = now
-            position.closed = True
+            self.close_position(position, ltp, now)
             return position
 
         return None
@@ -124,11 +122,15 @@ class Algorithm:
             for key in positions_db.keys():
                 for position in positions_db[key].values():
                     if not position.closed:
-                        position.exit_price = position.script.ltp
-                        position.exit_time = now
-                        position.closed = True
+                        self.close_position(position, position.script.ltp, now)
                         logger.info("Square Off: {}".format(position))
         finally:
             position_mutex.release()
+    
+    def close_position(self, position, price, now):
+        if not position.closed:
+            position.closed = True
+            position.exit_price = price
+            position.exit_time = now
 
     
