@@ -38,3 +38,37 @@ self.alice.start_websocket(subscriber_callback)
             [self.alice.get_instrument_by_symbol("NFO", i) for i in ["AXISBANK22OCT810CE", "AXISBANK22OCT810PE"]])
         time.sleep(600)
 
+for instrument in self.nfo_data:
+    script = Script.get_script(instrument.symbol)
+    eq_script = Script.get_script(script.eq_symbol)
+
+    # print(entity)
+    pc = script.ltp
+    ltp = script.ltp
+    pcd = round_off(pc * (1 + 0.095))
+    trigger_range = self._range_tolerance(pcd)
+    sl = round_off(pcd * (1 - 0.05))
+    tgt1 = round_off(pcd * (1 + 0.16))
+    tgt2 = round_off(pcd * (1 + 0.24))
+    tgt3 = round_off(pcd * (1 + 0.35))
+
+    if ltp < 5.00:
+        print("Ignoring script: {} as price {} is below 5".format(script.symbol, ltp))
+        continue
+
+    print("=============REGULAR BUY=============")
+    print("NAME: {}".format(script.symbol))
+    print("EQ CLOSE: {}".format(eq_script.ltp))
+    print("EQ DERIVED CLOSE: {}".format(
+        self.get_rounded_close(eq_script.close)[0 if script.option_type == OptionType.CE else 1]))
+    print("STRIKE: {}".format(script.strike_price))
+    print("Expiry: {}".format(script.expiry))
+    print("Close: {}".format(script.ltp))
+    print("LOT SIZE: {}".format(script.lot_size))
+    print("ENTRY RANGE WITH TOLERANCE 0.5%: {}".format(trigger_range))
+    print("SL: {}".format(sl))
+    print("TARGET 1: {}".format(tgt1))
+    print("TARGET 2: {}".format(tgt2))
+    print("TARGET 3: {}".format(tgt3))
+    print("CAPITAL REQUIRED FOR 1 LOT: {}".format(float(script.lot_size) * pcd))
+    print("=====================================")

@@ -14,6 +14,10 @@ class PositionsManager:
     def __init__(self):
         pass
 
+    def init_position_locks(self):
+        for symbol in script_locks:
+            self.get_or_create_position_lock(symbol)
+
     def update_position(self, script: Script):
         position_lock = self.get_or_create_position_lock(script.symbol)
         try:
@@ -25,6 +29,14 @@ class PositionsManager:
         finally:
             position_lock.release()
 
+    def get_position(self, script: Script):
+        position_lock = self.get_or_create_position_lock(script.symbol)
+        try:
+            position_lock.acquire(True)
+            return positions_db.get(script.eq_symbol, {}).get(script.symbol)
+        finally:
+            position_lock.release()
+
     def close_or_update_position(self, script: Script):
         p = Position.get_position(script.symbol)
         print(p)
@@ -33,11 +45,11 @@ class PositionsManager:
         p = Position(script.symbol, script.ltp, QTY, Strategy.REGULAR)
         Position.add_position(p)
 
-    def update_script(self, script: Script):
+    def update_script(self, script: Script) -> Script:
         script_lock = self.get_or_create_script_lock(script.symbol)
         try:
             script_lock.acquire(True)
-            Script.add_or_update_script(script)
+            return Script.add_or_update_script(script)
         finally:
             script_lock.release()
 

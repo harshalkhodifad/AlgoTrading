@@ -1,4 +1,6 @@
 import logging
-logging.basicConfig(filename='app-2022-11-01.txt', filemode='a', format='%(name)s - %(levelname)s - %(message)s',
+import datetime
+now = datetime.datetime.now()
+logger_file = now.strftime("algo-trading-%Y-%m-%d")
+logging.basicConfig(filename=logger_file, filemode='a', format='%(name)s - %(levelname)s - %(asctime)s - %(message)s',
                     level=logging.INFO)
-# %(asctime)s -

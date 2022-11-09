@@ -12,13 +12,14 @@ from constants import *
 
 class Script:
 
-    def __init__(self, instrument, script_details=None, subscription_details=None, **kwargs):
+    def __init__(self, instrument: Instrument, script_details=None, subscription_details=None, **kwargs):
         self.token = instrument.token
         self.exchange = instrument.exchange
         self.symbol = instrument.symbol
         self.name = instrument.name
         self.lot_size = instrument.lot_size
         self.expiry = instrument.expiry
+        self.tick_size = instrument.tick_size
         self.strike_price = convert_to_float(script_details.get('strikeprice') if script_details else subscription_details.get('strike_price'))
         self.ltp = convert_to_float(script_details.get('LTP') if script_details else subscription_details.get('ltp'))
         self.open = convert_to_float(script_details.get('openPrice') if script_details else subscription_details.get('open'))
@@ -35,7 +36,6 @@ class Script:
         self.bid_q = convert_to_int(None if script_details else subscription_details.get('best_bid_quantity'))
         self.ask_q = convert_to_int(None if script_details else subscription_details.get('best_ask_quantity'))
         self.price_precision = convert_to_int(script_details.get('DecimalPrecision') if script_details else subscription_details.get('price_precision'))
-        self.tick_size = script_details.get('TickSize') if script_details else subscription_details.get('TickSize')
         self.instrument = instrument
         self.derived_from = kwargs.get("derived_from")
 
@@ -55,6 +55,7 @@ class Script:
                 "bid_q": script.bid_q,
                 "ask_q": script.ask_q,
             })
+            return Script.get_script(script.symbol)
         else:
             scripts_db[script.symbol] = script
         return script
@@ -88,12 +89,17 @@ class Script:
 
 class Position:
 
-    def __init__(self, symbol, entry_price, qty, strategy):
-        self.symbol = symbol
+    def __init__(self, script: Script, entry_price, entry_time: datetime.datetime, qty, strategy):
+        self.script = script
         self.entry_price = entry_price
+        self.low = entry_price
+        self.high = entry_price
+        self.entry_time = entry_time
+        self.exit_price = None
+        self.exit_time = None
+        self.target_i = 0
         self.qty = qty
         self.strategy = strategy
-        self.exit_price = None
         self.closed = False
 
     @staticmethod
@@ -120,10 +126,6 @@ class Position:
         self.exit_price = self.script.ltp
 
     @property
-    def script(self) -> Script:
-        return Script.get_script(self.symbol)
-
-    @property
     def charges(self):
         return 50 * self.qty
 
@@ -131,6 +133,16 @@ class Position:
     def profit(self):
         exit_price = self.exit_price if self.closed else self.script.ltp
         return round_off((exit_price - self.entry_price) * self.qty * self.script.lot_size - self.charges)
+
+    @property
+    def targets(self):
+        return [round_off(self.entry_price * 1.16, self.script.tick_size),
+                round_off(self.entry_price * 1.24, self.script.tick_size),
+                round_off(self.entry_price * 1.35, self.script.tick_size)]
+
+    @property
+    def sl(self) -> float:
+        return 0.0
 
     def __repr__(self):
         return f"Position: {self.__dict__}\n"

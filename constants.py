@@ -19,6 +19,8 @@ APP_API_KEY = "bXDSLDcKUnZbjmzLqRpvBdhQfAqBCENZLKquDbapoddmvMmDNiJOCzjutoMZSJCIp
 
 # General
 QTY = 1
+TOLERANCE = 0.01
+MIN_OPTION_PRICE = 5
 
 
 # Option types

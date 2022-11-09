@@ -64,11 +64,13 @@ class Broker:
 class AliceClient(AliceBlue):
 
     def __init__(self):
+        logger.info("Connecting to AliceBlue")
         super().__init__(username=USERNAME, session_id=AliceBlue.login_and_get_sessionID(username=USERNAME,
                                                                                          password=PASSWORD,
                                                                                          twoFA=DOB,
                                                                                          app_id=APP_SECRET,
                                                                                          api_secret=APP_API_KEY))
+        logger.info("Connected to AliceBlue")
 
     def subscribe_instruments(self, instruments: List[Instrument], callback_fn):
         self.start_websocket(subscribe_callback=callback_fn)

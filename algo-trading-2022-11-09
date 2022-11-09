@@ -1,0 +1,325 @@
+WorkflowExecutor - INFO - 2022-11-09 05:42:43,470 - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+WorkflowExecutor - INFO - 2022-11-09 05:42:43,470 - Starting...
+WorkflowExecutor - INFO - 2022-11-09 05:42:43,754 - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+broker - INFO - 2022-11-09 05:42:50,658 - {'optiontype': 'XX', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '9', 'Ltp': '872.95', 'LTP': '872.95', 'DecimalPrecision': 2, 'openPrice': '876.25', 'BRate': '00.00', 'defmktproval': '3', 'BQty': 0, 'symbolname': 'AXISBANK', 'noMktPro': '0', 'LTT': 'NA', 'mktpro': '1', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '00.00', 'TotalSell': 'NA', 'High': '876.80', 'stat': 'Ok', 'BodLotQty': 1, 'yearlyHighPrice': '876.80', 'yearlyLowPrice': '00.00', 'exchFeedTime': '0', 'PrvClose': '872.95', 'SRate': '00.00', 'Change': '00.00', 'Series': 'EQ', 'TotalBuy': 'NA', 'Low': '861.30', 'UniqueKey': 'AXISBANK', 'PerChange': '00.00', 'companyname': 'AXIS BANK LIMITED', 'TradeVolume': '0', 'TSymbl': 'AXISBANK-EQ', 'Exp': 'NA', 'LTD': 'NA'}
+broker - INFO - 2022-11-09 05:42:53,832 - {'optiontype': 'CE', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '1200', 'Ltp': '17.25', 'LTP': '17.25', 'DecimalPrecision': 2, 'openPrice': '18.70', 'BRate': '00.00', 'defmktproval': '3', 'BQty': 0, 'symbolname': 'AXISBANK', 'noMktPro': '0', 'LTT': 'NA', 'mktpro': '1', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '880.00', 'TotalSell': 'NA', 'High': '19.55', 'stat': 'Ok', 'BodLotQty': 1200, 'yearlyHighPrice': '19.55', 'yearlyLowPrice': '00.00', 'exchFeedTime': '0', 'PrvClose': '17.05', 'SRate': '00.00', 'Change': '00.20', 'Series': 'XX', 'TotalBuy': 'NA', 'Low': '12.95', 'UniqueKey': 'NA', 'PerChange': '01.17', 'companyname': '', 'TradeVolume': '0', 'TSymbl': 'AXISBANK22NOV880CE', 'Exp': '24 Nov, 2022', 'LTD': 'NA'}
+WorkflowExecutor - INFO - 2022-11-09 05:42:56,323 - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+WorkflowExecutor - INFO - 2022-11-09 05:42:56,324 - Starting...
+WorkflowExecutor - INFO - 2022-11-09 05:42:56,636 - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+broker - INFO - 2022-11-09 05:43:01,410 - {'optiontype': 'XX', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '9', 'DecimalPrecision': 2, 'openPrice': '876.25', 'LTP': '872.95', 'Ltp': '872.95', 'BRate': '00.00', 'defmktproval': '3', 'symbolname': 'AXISBANK', 'noMktPro': '0', 'BQty': 0, 'mktpro': '1', 'LTT': 'NA', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '00.00', 'TotalSell': 'NA', 'High': '876.80', 'stat': 'Ok', 'yearlyLowPrice': '00.00', 'yearlyHighPrice': '876.80', 'exchFeedTime': '0', 'BodLotQty': 1, 'PrvClose': '872.95', 'Change': '00.00', 'SRate': '00.00', 'Series': 'EQ', 'TotalBuy': 'NA', 'Low': '861.30', 'UniqueKey': 'AXISBANK', 'PerChange': '00.00', 'companyname': 'AXIS BANK LIMITED', 'TradeVolume': '0', 'TSymbl': 'AXISBANK-EQ', 'Exp': 'NA', 'LTD': 'NA'}
+broker - INFO - 2022-11-09 05:43:04,699 - {'optiontype': 'CE', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '1200', 'DecimalPrecision': 2, 'openPrice': '18.70', 'LTP': '17.25', 'Ltp': '17.25', 'BRate': '00.00', 'defmktproval': '3', 'symbolname': 'AXISBANK', 'noMktPro': '0', 'BQty': 0, 'mktpro': '1', 'LTT': 'NA', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '880.00', 'TotalSell': 'NA', 'High': '19.55', 'stat': 'Ok', 'yearlyLowPrice': '00.00', 'yearlyHighPrice': '19.55', 'exchFeedTime': '0', 'BodLotQty': 1200, 'PrvClose': '17.05', 'Change': '00.20', 'SRate': '00.00', 'Series': 'XX', 'TotalBuy': 'NA', 'Low': '12.95', 'UniqueKey': 'NA', 'PerChange': '01.17', 'companyname': '', 'TradeVolume': '0', 'TSymbl': 'AXISBANK22NOV880CE', 'Exp': '24 Nov, 2022', 'LTD': 'NA'}
+broker - INFO - 2022-11-09 05:43:08,654 - {'optiontype': 'PE', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '1200', 'DecimalPrecision': 2, 'openPrice': '10.00', 'LTP': '14.45', 'Ltp': '14.45', 'BRate': '00.00', 'defmktproval': '3', 'symbolname': 'AXISBANK', 'noMktPro': '0', 'BQty': 0, 'mktpro': '1', 'LTT': 'NA', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '870.00', 'TotalSell': 'NA', 'High': '21.00', 'stat': 'Ok', 'yearlyLowPrice': '00.00', 'yearlyHighPrice': '21.00', 'exchFeedTime': '0', 'BodLotQty': 1200, 'PrvClose': '14.90', 'Change': '-00.45', 'SRate': '00.00', 'Series': 'XX', 'TotalBuy': 'NA', 'Low': '10.00', 'UniqueKey': 'NA', 'PerChange': '-03.02', 'companyname': '', 'TradeVolume': '0', 'TSymbl': 'AXISBANK22NOV870PE', 'Exp': '24 Nov, 2022', 'LTD': 'NA'}
+WorkflowExecutor - INFO - 2022-11-09 05:44:02,809 - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+WorkflowExecutor - INFO - 2022-11-09 05:44:02,809 - Starting...
+WorkflowExecutor - INFO - 2022-11-09 05:44:03,067 - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+broker - INFO - 2022-11-09 05:44:08,717 - {'optiontype': 'XX', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '9', 'Ltp': '872.95', 'LTP': '872.95', 'DecimalPrecision': 2, 'openPrice': '876.25', 'BRate': '00.00', 'defmktproval': '3', 'BQty': 0, 'symbolname': 'AXISBANK', 'noMktPro': '0', 'LTT': 'NA', 'mktpro': '1', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '00.00', 'TotalSell': 'NA', 'High': '876.80', 'stat': 'Ok', 'BodLotQty': 1, 'yearlyHighPrice': '876.80', 'yearlyLowPrice': '00.00', 'exchFeedTime': '0', 'PrvClose': '872.95', 'SRate': '00.00', 'Change': '00.00', 'Series': 'EQ', 'TotalBuy': 'NA', 'Low': '861.30', 'UniqueKey': 'AXISBANK', 'PerChange': '00.00', 'companyname': 'AXIS BANK LIMITED', 'TradeVolume': '0', 'TSymbl': 'AXISBANK-EQ', 'Exp': 'NA', 'LTD': 'NA'}
+broker - INFO - 2022-11-09 05:44:10,760 - {'optiontype': 'CE', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '1200', 'Ltp': '17.25', 'LTP': '17.25', 'DecimalPrecision': 2, 'openPrice': '18.70', 'BRate': '00.00', 'defmktproval': '3', 'BQty': 0, 'symbolname': 'AXISBANK', 'noMktPro': '0', 'LTT': 'NA', 'mktpro': '1', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '880.00', 'TotalSell': 'NA', 'High': '19.55', 'stat': 'Ok', 'BodLotQty': 1200, 'yearlyHighPrice': '19.55', 'yearlyLowPrice': '00.00', 'exchFeedTime': '0', 'PrvClose': '17.05', 'SRate': '00.00', 'Change': '00.20', 'Series': 'XX', 'TotalBuy': 'NA', 'Low': '12.95', 'UniqueKey': 'NA', 'PerChange': '01.17', 'companyname': '', 'TradeVolume': '0', 'TSymbl': 'AXISBANK22NOV880CE', 'Exp': '24 Nov, 2022', 'LTD': 'NA'}
+broker - INFO - 2022-11-09 05:44:14,950 - {'optiontype': 'PE', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '1200', 'Ltp': '14.45', 'LTP': '14.45', 'DecimalPrecision': 2, 'openPrice': '10.00', 'BRate': '00.00', 'defmktproval': '3', 'BQty': 0, 'symbolname': 'AXISBANK', 'noMktPro': '0', 'LTT': 'NA', 'mktpro': '1', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '870.00', 'TotalSell': 'NA', 'High': '21.00', 'stat': 'Ok', 'BodLotQty': 1200, 'yearlyHighPrice': '21.00', 'yearlyLowPrice': '00.00', 'exchFeedTime': '0', 'PrvClose': '14.90', 'SRate': '00.00', 'Change': '-00.45', 'Series': 'XX', 'TotalBuy': 'NA', 'Low': '10.00', 'UniqueKey': 'NA', 'PerChange': '-03.02', 'companyname': '', 'TradeVolume': '0', 'TSymbl': 'AXISBANK22NOV870PE', 'Exp': '24 Nov, 2022', 'LTD': 'NA'}
+WorkflowExecutor - INFO - 2022-11-09 05:44:31,291 - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+WorkflowExecutor - INFO - 2022-11-09 05:44:31,291 - Starting...
+WorkflowExecutor - INFO - 2022-11-09 05:44:31,547 - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+broker - INFO - 2022-11-09 05:44:37,687 - {'optiontype': 'XX', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '9', 'DecimalPrecision': 2, 'openPrice': '876.25', 'LTP': '872.95', 'Ltp': '872.95', 'BRate': '00.00', 'defmktproval': '3', 'symbolname': 'AXISBANK', 'noMktPro': '0', 'BQty': 0, 'mktpro': '1', 'LTT': 'NA', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '00.00', 'TotalSell': 'NA', 'High': '876.80', 'stat': 'Ok', 'yearlyLowPrice': '00.00', 'yearlyHighPrice': '876.80', 'exchFeedTime': '0', 'BodLotQty': 1, 'PrvClose': '872.95', 'Change': '00.00', 'SRate': '00.00', 'Series': 'EQ', 'TotalBuy': 'NA', 'Low': '861.30', 'UniqueKey': 'AXISBANK', 'PerChange': '00.00', 'companyname': 'AXIS BANK LIMITED', 'TradeVolume': '0', 'TSymbl': 'AXISBANK-EQ', 'Exp': 'NA', 'LTD': 'NA'}
+broker - INFO - 2022-11-09 05:44:39,951 - {'optiontype': 'CE', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '1200', 'DecimalPrecision': 2, 'openPrice': '18.70', 'LTP': '17.25', 'Ltp': '17.25', 'BRate': '00.00', 'defmktproval': '3', 'symbolname': 'AXISBANK', 'noMktPro': '0', 'BQty': 0, 'mktpro': '1', 'LTT': 'NA', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '880.00', 'TotalSell': 'NA', 'High': '19.55', 'stat': 'Ok', 'yearlyLowPrice': '00.00', 'yearlyHighPrice': '19.55', 'exchFeedTime': '0', 'BodLotQty': 1200, 'PrvClose': '17.05', 'Change': '00.20', 'SRate': '00.00', 'Series': 'XX', 'TotalBuy': 'NA', 'Low': '12.95', 'UniqueKey': 'NA', 'PerChange': '01.17', 'companyname': '', 'TradeVolume': '0', 'TSymbl': 'AXISBANK22NOV880CE', 'Exp': '24 Nov, 2022', 'LTD': 'NA'}
+broker - INFO - 2022-11-09 05:44:42,055 - {'optiontype': 'PE', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '1200', 'DecimalPrecision': 2, 'openPrice': '10.00', 'LTP': '14.45', 'Ltp': '14.45', 'BRate': '00.00', 'defmktproval': '3', 'symbolname': 'AXISBANK', 'noMktPro': '0', 'BQty': 0, 'mktpro': '1', 'LTT': 'NA', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '870.00', 'TotalSell': 'NA', 'High': '21.00', 'stat': 'Ok', 'yearlyLowPrice': '00.00', 'yearlyHighPrice': '21.00', 'exchFeedTime': '0', 'BodLotQty': 1200, 'PrvClose': '14.90', 'Change': '-00.45', 'SRate': '00.00', 'Series': 'XX', 'TotalBuy': 'NA', 'Low': '10.00', 'UniqueKey': 'NA', 'PerChange': '-03.02', 'companyname': '', 'TradeVolume': '0', 'TSymbl': 'AXISBANK22NOV870PE', 'Exp': '24 Nov, 2022', 'LTD': 'NA'}
+WorkflowExecutor - INFO - 2022-11-09 05:45:04,412 - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+WorkflowExecutor - INFO - 2022-11-09 06:06:06,378 - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+WorkflowExecutor - INFO - 2022-11-09 06:06:06,378 - Starting...
+WorkflowExecutor - INFO - 2022-11-09 06:06:12,133 - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+WorkflowExecutor - INFO - 2022-11-09 06:06:12,133 - Fetching F&O Data
+broker - INFO - 2022-11-09 06:06:13,589 - {'optiontype': 'XX', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '9', 'Ltp': '872.95', 'LTP': '872.95', 'DecimalPrecision': 2, 'openPrice': '876.25', 'BRate': '00.00', 'defmktproval': '3', 'BQty': 0, 'symbolname': 'AXISBANK', 'noMktPro': '0', 'LTT': 'NA', 'mktpro': '1', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '00.00', 'TotalSell': 'NA', 'High': '876.80', 'stat': 'Ok', 'BodLotQty': 1, 'yearlyHighPrice': '876.80', 'yearlyLowPrice': '00.00', 'exchFeedTime': '0', 'PrvClose': '872.95', 'SRate': '00.00', 'Change': '00.00', 'Series': 'EQ', 'TotalBuy': 'NA', 'Low': '861.30', 'UniqueKey': 'AXISBANK', 'PerChange': '00.00', 'companyname': 'AXIS BANK LIMITED', 'TradeVolume': '0', 'TSymbl': 'AXISBANK-EQ', 'Exp': 'NA', 'LTD': 'NA'}
+broker - INFO - 2022-11-09 06:06:16,251 - {'optiontype': 'CE', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '1200', 'Ltp': '17.25', 'LTP': '17.25', 'DecimalPrecision': 2, 'openPrice': '18.70', 'BRate': '00.00', 'defmktproval': '3', 'BQty': 0, 'symbolname': 'AXISBANK', 'noMktPro': '0', 'LTT': 'NA', 'mktpro': '1', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '880.00', 'TotalSell': 'NA', 'High': '19.55', 'stat': 'Ok', 'BodLotQty': 1200, 'yearlyHighPrice': '19.55', 'yearlyLowPrice': '00.00', 'exchFeedTime': '0', 'PrvClose': '17.05', 'SRate': '00.00', 'Change': '00.20', 'Series': 'XX', 'TotalBuy': 'NA', 'Low': '12.95', 'UniqueKey': 'NA', 'PerChange': '01.17', 'companyname': '', 'TradeVolume': '0', 'TSymbl': 'AXISBANK22NOV880CE', 'Exp': '24 Nov, 2022', 'LTD': 'NA'}
+broker - INFO - 2022-11-09 06:06:20,556 - {'optiontype': 'PE', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '1200', 'Ltp': '14.45', 'LTP': '14.45', 'DecimalPrecision': 2, 'openPrice': '10.00', 'BRate': '00.00', 'defmktproval': '3', 'BQty': 0, 'symbolname': 'AXISBANK', 'noMktPro': '0', 'LTT': 'NA', 'mktpro': '1', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '870.00', 'TotalSell': 'NA', 'High': '21.00', 'stat': 'Ok', 'BodLotQty': 1200, 'yearlyHighPrice': '21.00', 'yearlyLowPrice': '00.00', 'exchFeedTime': '0', 'PrvClose': '14.90', 'SRate': '00.00', 'Change': '-00.45', 'Series': 'XX', 'TotalBuy': 'NA', 'Low': '10.00', 'UniqueKey': 'NA', 'PerChange': '-03.02', 'companyname': '', 'TradeVolume': '0', 'TSymbl': 'AXISBANK22NOV870PE', 'Exp': '24 Nov, 2022', 'LTD': 'NA'}
+WorkflowExecutor - INFO - 2022-11-09 06:06:22,397 - Fetched F&O Data, Total Instruments: 1
+WorkflowExecutor - INFO - 2022-11-09 06:07:17,775 - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+WorkflowExecutor - INFO - 2022-11-09 06:07:17,775 - Starting...
+broker - INFO - 2022-11-09 06:07:18,013 - Connecting to AliceBlue
+broker - INFO - 2022-11-09 06:07:23,329 - Connected to AliceBlue
+WorkflowExecutor - INFO - 2022-11-09 06:07:23,329 - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+WorkflowExecutor - INFO - 2022-11-09 06:07:23,329 - Fetching F&O Data
+broker - INFO - 2022-11-09 06:07:25,384 - {'optiontype': 'XX', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '9', 'DecimalPrecision': 2, 'openPrice': '876.25', 'LTP': '872.95', 'Ltp': '872.95', 'BRate': '00.00', 'defmktproval': '3', 'symbolname': 'AXISBANK', 'noMktPro': '0', 'BQty': 0, 'mktpro': '1', 'LTT': 'NA', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '00.00', 'TotalSell': 'NA', 'High': '876.80', 'stat': 'Ok', 'yearlyLowPrice': '00.00', 'yearlyHighPrice': '876.80', 'exchFeedTime': '0', 'BodLotQty': 1, 'PrvClose': '872.95', 'Change': '00.00', 'SRate': '00.00', 'Series': 'EQ', 'TotalBuy': 'NA', 'Low': '861.30', 'UniqueKey': 'AXISBANK', 'PerChange': '00.00', 'companyname': 'AXIS BANK LIMITED', 'TradeVolume': '0', 'TSymbl': 'AXISBANK-EQ', 'Exp': 'NA', 'LTD': 'NA'}
+broker - INFO - 2022-11-09 06:07:27,930 - {'optiontype': 'CE', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '1200', 'DecimalPrecision': 2, 'openPrice': '18.70', 'LTP': '17.25', 'Ltp': '17.25', 'BRate': '00.00', 'defmktproval': '3', 'symbolname': 'AXISBANK', 'noMktPro': '0', 'BQty': 0, 'mktpro': '1', 'LTT': 'NA', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '880.00', 'TotalSell': 'NA', 'High': '19.55', 'stat': 'Ok', 'yearlyLowPrice': '00.00', 'yearlyHighPrice': '19.55', 'exchFeedTime': '0', 'BodLotQty': 1200, 'PrvClose': '17.05', 'Change': '00.20', 'SRate': '00.00', 'Series': 'XX', 'TotalBuy': 'NA', 'Low': '12.95', 'UniqueKey': 'NA', 'PerChange': '01.17', 'companyname': '', 'TradeVolume': '0', 'TSymbl': 'AXISBANK22NOV880CE', 'Exp': '24 Nov, 2022', 'LTD': 'NA'}
+broker - INFO - 2022-11-09 06:07:30,566 - {'optiontype': 'PE', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '1200', 'DecimalPrecision': 2, 'openPrice': '10.00', 'LTP': '14.45', 'Ltp': '14.45', 'BRate': '00.00', 'defmktproval': '3', 'symbolname': 'AXISBANK', 'noMktPro': '0', 'BQty': 0, 'mktpro': '1', 'LTT': 'NA', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '870.00', 'TotalSell': 'NA', 'High': '21.00', 'stat': 'Ok', 'yearlyLowPrice': '00.00', 'yearlyHighPrice': '21.00', 'exchFeedTime': '0', 'BodLotQty': 1200, 'PrvClose': '14.90', 'Change': '-00.45', 'SRate': '00.00', 'Series': 'XX', 'TotalBuy': 'NA', 'Low': '10.00', 'UniqueKey': 'NA', 'PerChange': '-03.02', 'companyname': '', 'TradeVolume': '0', 'TSymbl': 'AXISBANK22NOV870PE', 'Exp': '24 Nov, 2022', 'LTD': 'NA'}
+WorkflowExecutor - INFO - 2022-11-09 06:07:31,922 - Fetched F&O Data, Total Instruments: 1
+WorkflowExecutor - INFO - 2022-11-09 06:08:04,968 - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+WorkflowExecutor - INFO - 2022-11-09 06:08:04,968 - Starting...
+broker - INFO - 2022-11-09 06:08:05,212 - Connecting to AliceBlue
+broker - INFO - 2022-11-09 06:08:11,050 - Connected to AliceBlue
+WorkflowExecutor - INFO - 2022-11-09 06:08:11,050 - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+WorkflowExecutor - INFO - 2022-11-09 06:08:11,050 - Fetching F&O Data
+broker - INFO - 2022-11-09 06:08:12,284 - {'optiontype': 'XX', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '9', 'DecimalPrecision': 2, 'openPrice': '876.25', 'LTP': '872.95', 'Ltp': '872.95', 'BRate': '00.00', 'defmktproval': '3', 'symbolname': 'AXISBANK', 'noMktPro': '0', 'BQty': 0, 'mktpro': '1', 'LTT': 'NA', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '00.00', 'TotalSell': 'NA', 'High': '876.80', 'stat': 'Ok', 'yearlyLowPrice': '00.00', 'yearlyHighPrice': '876.80', 'exchFeedTime': '0', 'BodLotQty': 1, 'PrvClose': '872.95', 'Change': '00.00', 'SRate': '00.00', 'Series': 'EQ', 'TotalBuy': 'NA', 'Low': '861.30', 'UniqueKey': 'AXISBANK', 'PerChange': '00.00', 'companyname': 'AXIS BANK LIMITED', 'TradeVolume': '0', 'TSymbl': 'AXISBANK-EQ', 'Exp': 'NA', 'LTD': 'NA'}
+broker - INFO - 2022-11-09 06:08:15,799 - {'optiontype': 'CE', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '1200', 'Ltp': '17.25', 'LTP': '17.25', 'DecimalPrecision': 2, 'openPrice': '18.70', 'BRate': '00.00', 'defmktproval': '3', 'BQty': 0, 'symbolname': 'AXISBANK', 'noMktPro': '0', 'LTT': 'NA', 'mktpro': '1', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '880.00', 'TotalSell': 'NA', 'High': '19.55', 'stat': 'Ok', 'BodLotQty': 1200, 'yearlyHighPrice': '19.55', 'yearlyLowPrice': '00.00', 'exchFeedTime': '0', 'PrvClose': '17.05', 'SRate': '00.00', 'Change': '00.20', 'Series': 'XX', 'TotalBuy': 'NA', 'Low': '12.95', 'UniqueKey': 'NA', 'PerChange': '01.17', 'companyname': '', 'TradeVolume': '0', 'TSymbl': 'AXISBANK22NOV880CE', 'Exp': '24 Nov, 2022', 'LTD': 'NA'}
+broker - INFO - 2022-11-09 06:08:18,926 - {'optiontype': 'PE', 'SQty': 0, 'vwapAveragePrice': 'NA', 'LTQ': '1200', 'Ltp': '14.45', 'LTP': '14.45', 'DecimalPrecision': 2, 'openPrice': '10.00', 'BRate': '00.00', 'defmktproval': '3', 'BQty': 0, 'symbolname': 'AXISBANK', 'noMktPro': '0', 'LTT': 'NA', 'mktpro': '1', 'TickSize': '5', 'Multiplier': 1, 'strikeprice': '870.00', 'TotalSell': 'NA', 'High': '21.00', 'stat': 'Ok', 'BodLotQty': 1200, 'yearlyHighPrice': '21.00', 'yearlyLowPrice': '00.00', 'exchFeedTime': '0', 'PrvClose': '14.90', 'SRate': '00.00', 'Change': '-00.45', 'Series': 'XX', 'TotalBuy': 'NA', 'Low': '10.00', 'UniqueKey': 'NA', 'PerChange': '-03.02', 'companyname': '', 'TradeVolume': '0', 'TSymbl': 'AXISBANK22NOV870PE', 'Exp': '24 Nov, 2022', 'LTD': 'NA'}
+WorkflowExecutor - INFO - 2022-11-09 06:08:20,800 - Fetched F&O Data, Total Instruments: 1
+WorkflowExecutor - INFO - 2022-11-09 06:09:01,839 - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -16,7 +16,7 @@ import threading
 import websocket
 
 Instrument = namedtuple('Instrument', ['exchange', 'instrument_type', 'token', 'symbol', 'eq',
-                                       'name', 'option_type', 'strike_price', 'expiry', 'lot_size'])
+                                       'name', 'option_type', 'strike_price', 'expiry', 'lot_size', 'tick_size'])
 logger = logging.getLogger(__name__)
 
 
@@ -1021,13 +1021,18 @@ class AliceBlue:
                     else:
                         eq = None
 
+                    if "tick_size" in scrip:
+                        tick_size = float(scrip.get('tick_size'))
+                    else:
+                        tick_size = None
+
                     # Name
                     name = None
                     if ("formatted_ins_name" in scrip):
                         name = scrip["formatted_ins_name"]
 
                     instrument = Instrument(exch, instrument_type, token, symbol, eq, name, option_type, strike_price,
-                                            expiry, lot_size)
+                                            expiry, lot_size, tick_size)
                     if (exch not in self.__master_contracts_by_token):
                         self.__master_contracts_by_token[exch] = {}
                     if (exch not in self.__master_contracts_by_symbol):
