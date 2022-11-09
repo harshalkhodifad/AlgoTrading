@@ -1021,7 +1021,7 @@ class AliceBlue:
                     else:
                         eq = None
 
-                    if "tick_size" in scrip:
+                    if "tick_size" in scrip and scrip.get('tick_size') is not None:
                         tick_size = float(scrip.get('tick_size'))
                     else:
                         tick_size = None

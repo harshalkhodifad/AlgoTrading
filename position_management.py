@@ -18,32 +18,17 @@ class PositionsManager:
         for symbol in script_locks:
             self.get_or_create_position_lock(symbol)
 
-    def update_position(self, script: Script):
-        position_lock = self.get_or_create_position_lock(script.symbol)
-        try:
-            position_lock.acquire(True)
-            if script.symbol in positions_db:
-                self.close_or_update_position(script)
-            else:
-                self.create_position(script)
-        finally:
-            position_lock.release()
+    def get_position(self, script: Script) -> Position:
+        return positions_db.get(script.eq_symbol, {}).get(script.symbol)
 
-    def get_position(self, script: Script):
-        position_lock = self.get_or_create_position_lock(script.symbol)
-        try:
-            position_lock.acquire(True)
-            return positions_db.get(script.eq_symbol, {}).get(script.symbol)
-        finally:
-            position_lock.release()
+    def get_script(self, symbol) -> Script:
+        return Script.get_script(symbol)
 
-    def close_or_update_position(self, script: Script):
-        p = Position.get_position(script.symbol)
-        print(p)
-
-    def create_position(self, script: Script):
-        p = Position(script.symbol, script.ltp, QTY, Strategy.REGULAR)
-        Position.add_position(p)
+    def add_position(self, position: Position):
+        positions_db[position.script.eq_symbol] = {
+            position.script.symbol: position
+        }
+        return positions_db[position.script.eq_symbol][position.script.symbol]
 
     def update_script(self, script: Script) -> Script:
         script_lock = self.get_or_create_script_lock(script.symbol)

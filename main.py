@@ -35,6 +35,7 @@ square_off_in_progress = False
 
 def callback(script):
     global square_off_in_progress
+    print(script)
     algo.process(script, square_off_in_progress)
 
 
@@ -55,8 +56,8 @@ class WorkflowExecutor:
         print("Starting trade executions")
         # import ipdb; ipdb.set_trace()
         # self.broker.subscribe([self.broker.get_instrument_by_symbol("NFO", "AXISBANK22NOV880CE")], callback)
-        # self.broker.subscribe(self.nfo_data, callback)
-        feed_dummy_data(callback)
+        self.broker.subscribe(self.nfo_data, callback)
+        # feed_dummy_data(callback)
 
         while True:
             time.sleep(1)
@@ -83,17 +84,22 @@ class WorkflowExecutor:
             square_off_in_progress = True
             self.broker.unsubscribe(self.nfo_data)
             print("Square off initiated")
-            # algo.square_off()
+            logger.info("Square off initiated")
+            algo.square_off()
             print("Square off completed")
+            logger.info("Square off completed")
             return True
         else:
-            return True # TO CHANGE
+            return False # TO CHANGE
 
     def _initialize_db(self):
         logger.info("Fetching F&O Data")
         self.nfo_data, self.eq_set, self.expiry_date = self.broker.get_nfo_data(self._get_date())
         updated_nfo_data = []
+        i = 0
         for instrument in self.eq_set:
+            print(i)
+            i+=1
             eq_instrument = self.broker.get_instrument_by_symbol("NSE", instrument.eq)
             eq_script = self.broker.get_script_info(eq_instrument)
             ce_instrument, ce_close, pe_instrument, pe_close = self._find_instruments(eq_script.symbol, eq_script.close)

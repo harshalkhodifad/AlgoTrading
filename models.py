@@ -19,7 +19,7 @@ class Script:
         self.name = instrument.name
         self.lot_size = instrument.lot_size
         self.expiry = instrument.expiry
-        self.tick_size = instrument.tick_size
+        self.tick_size = convert_to_float(instrument.tick_size)
         self.strike_price = convert_to_float(script_details.get('strikeprice') if script_details else subscription_details.get('strike_price'))
         self.ltp = convert_to_float(script_details.get('LTP') if script_details else subscription_details.get('ltp'))
         self.open = convert_to_float(script_details.get('openPrice') if script_details else subscription_details.get('open'))
@@ -89,7 +89,7 @@ class Script:
 
 class Position:
 
-    def __init__(self, script: Script, entry_price, entry_time: datetime.datetime, qty, strategy):
+    def __init__(self, script: Script, entry_price, entry_time: datetime.datetime, qty, strategy: Strategy):
         self.script = script
         self.entry_price = entry_price
         self.low = entry_price
@@ -127,7 +127,7 @@ class Position:
 
     @property
     def charges(self):
-        return 50 * self.qty
+        return 40 * self.qty
 
     @property
     def profit(self):
@@ -145,7 +145,7 @@ class Position:
         return 0.0
 
     def __repr__(self):
-        return f"Position: {self.__dict__}\n"
+        return f"Position profit: {self.profit}, Details: {self.__dict__}\n"
         # return f"Position: {self.strategy.value} {self.symbol} {self.entry_price} {self.script.ltp} {self.profit}\n"
 
 

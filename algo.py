@@ -1,11 +1,16 @@
 import datetime
 import time
+import logging
+from typing import Any
 
 import position_management
 from models import Script, Position
 from position_management import PositionsManager
 from variables import *
 from constants import *
+from utils import *
+
+logger = logging.getLogger("Algorithm")
 
 
 class Algorithm:
@@ -20,12 +25,22 @@ class Algorithm:
         script = Script(instrument=script.get('instrument'), subscription_details=script)
         script = self.position_manager.update_script(script)
         print(script)
-        if self.should_create_new_position(script):
-            self.create_position(script)
-        else:
-            self.update_position(script)
-        # update_script(script)
-        # update_position(script)
+        script_lock = self.position_manager.get_or_create_script_lock(script.symbol)
+        position_lock = self.position_manager.get_or_create_position_lock(script.symbol)
+        try:
+            script_lock.acquire()
+            position_lock.acquire()
+            if self.should_create_new_position(script):
+                p = self.create_position(script)
+                if p is not None:
+                    logger.info("Entry: {}".format(p))
+            else:
+                p = self.update_position(script)
+                if p is not None:
+                    logger.info("Exit: {}".format(p))
+        finally:
+            position_lock.release()
+            script_lock.release()
 
     def should_create_new_position(self, script: Script):
         now = datetime.datetime.now()
@@ -38,6 +53,83 @@ class Algorithm:
         else:
             return True
 
+    def create_position(self, script: Script):
+        now = datetime.datetime.now()
+        close = script.close
+        ltp = script.ltp
+        fail_low = round_off(close * (1 - 0.18), script.tick_size)
+
+        if script.low >= close:
+            # REGULAR
+            entry = round_off(close * (1 + 0.095), script.tick_size)
+            lower_end = entry - 2 * script.tick_size
+            upper_end = entry + 2 * script.tick_size
+            if lower_end <= ltp <= upper_end:
+                position = Position(script, ltp, now, 1, Strategy.REGULAR)
+                return self.position_manager.add_position(position)
+        elif script.low >= fail_low:
+            # REVISED 1
+            entry = round_off(script.low * (1 + 0.08), script.tick_size)
+            lower_end = entry - 2 * script.tick_size
+            upper_end = entry + 2 * script.tick_size
+            if lower_end <= ltp <= upper_end:
+                position = Position(script, ltp, now, 1, Strategy.REVISED_1)
+                return self.position_manager.add_position(position)
+        else:
+            # REVISED 2
+            entry = round_off(script.low * (1 + 0.12), script.tick_size)
+            lower_end = entry - 2 * script.tick_size
+            upper_end = entry + 2 * script.tick_size
+            if lower_end <= ltp <= upper_end:
+                position = Position(script, ltp, now, 1, Strategy.REVISED_2)
+                return self.position_manager.add_position(position)
+        return None
+
     def update_position(self, script: Script):
-        pass
+        now = datetime.datetime.now()
+        position = self.position_manager.get_position(script)
+        if position is None or position.closed:
+            return None
+        ltp = script.ltp
+        position.low = min(position.low, ltp)
+        position.high = max(position.high, ltp)
+        t1 = position.targets[0]
+        t2 = position.targets[1]
+        t3 = position.targets[2]
+        sl = round_off(position.entry_price * (1 - 0.05), position.script.tick_size)
+
+        if position.high >= t3 * (1 + 0.06):
+            sl = round_off(position.high * (1 - 0.05), position.script.tick_size)
+        elif position.high >= t3 * (1 + 0.01):
+            sl = round_off(t3, position.script.tick_size)
+        elif position.high >= t2 * (1 + 0.01):
+            sl = round_off(t2, position.script.tick_size)
+        elif position.high >= t1 * (1 + 0.01):
+            sl = round_off(t1, position.script.tick_size)
+        else:
+            sl = round_off(position.entry_price * (1 - 0.05), position.script.tick_size)
+
+        if ltp <= sl:
+            position.exit_price = ltp
+            position.exit_time = now
+            position.closed = True
+            return position
+
+        return None
+
+    def square_off(self):
+        try:
+            logger.info("Waiting for positions to close")
+            time.sleep(20)
+            now = datetime.datetime.now()
+            position_mutex.acquire()
+            for key in positions_db.keys():
+                for position in positions_db[key].values():
+                    position.exit_price = position.script.ltp
+                    position.exit_time = now
+                    position.closed = True
+                    logger.info("Square Off: {}".format(position))
+        finally:
+            position_mutex.release()
+
     
