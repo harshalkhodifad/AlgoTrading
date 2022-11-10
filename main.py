@@ -52,7 +52,7 @@ class WorkflowExecutor:
         self.execute()
 
     def execute(self):
-        print("Starting trade executions")
+        logger.info("Starting trade executions")
         # import ipdb; ipdb.set_trace()
         # self.broker.subscribe([self.broker.get_instrument_by_symbol("NFO", "AXISBANK22NOV880CE")], callback)
         self.broker.subscribe(self.nfo_data, callback)
@@ -97,7 +97,7 @@ class WorkflowExecutor:
         updated_nfo_data = []
         i = 0
         for instrument in self.eq_set:
-            print(i)
+            logger.info("Fetching Script: {}/{}".format(i+1, len(self.eq_set)))
             i+=1
             eq_instrument = self.broker.get_instrument_by_symbol("NSE", instrument.eq)
             eq_script = self.broker.get_script_info(eq_instrument)
