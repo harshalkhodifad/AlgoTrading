@@ -1,5 +1,17 @@
 # AlgoTrading
 
+## Setup Instructions:
+```commandline
+git clone git@github.com:harshalkhodifad/AlgoTrading.git
+cd AlgoTrading
+sudo apt-get install python3-venv
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+## Logic
+
 1. Fetch F&O list
 2. Interaction with live data
 3. Order placement interaction => (Dummy + Actual)
