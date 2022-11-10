@@ -71,10 +71,10 @@ class WorkflowExecutor:
 
     def should_execute(self):
         now = datetime.datetime.now()
-        if now.hour == 9 and now.minute == 20:
+        if (now.hour * 60 + now.minute) >= (9*60 + 20):
             return True
         else:
-            return True # TO CHANGE
+            return False
 
     def exit_if_required(self):
         global square_off_in_progress
@@ -89,7 +89,7 @@ class WorkflowExecutor:
             logger.info("Square off completed")
             return True
         else:
-            return False # TO CHANGE
+            return False
 
     def _initialize_db(self):
         logger.info("Fetching F&O Data")
