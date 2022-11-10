@@ -2,12 +2,21 @@
 
 ## Setup Instructions:
 ```commandline
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install python3.8
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1
+sudo update-alternatives --config python3
+sudo apt install python3-pip
+pip3 install --upgrade pip
+sudo apt-get install python3.8-venv
 git clone git@github.com:harshalkhodifad/AlgoTrading.git
 cd AlgoTrading
-sudo apt-get install python3-venv
 python3 -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+pip3 install --upgrade pip
+pip3 install -r requirements.txt
 deactivate
 source venv/bin/activate
 ```

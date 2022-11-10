@@ -1,9 +1,5 @@
-setuptools
-cryptography
-ipdb
-ipython
-numpy
-pandas
-python-dateutil
-pytz
-websocket-client
+requests~=2.22.0
+pandas~=1.1.5
+websocket-client~=1.3.1
+ipdb~=0.13.9
+cryptography~=38.0.1
