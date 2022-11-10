@@ -67,7 +67,7 @@ class Algorithm:
                 return self.position_manager.add_position(position)
         elif script.low >= fail_low:
             # REVISED 1
-            entry = round_off(script.low * (1 + 0.08), script.tick_size)
+            entry = round_off(script.low * (1 + 0.1), script.tick_size)
             lower_end = entry - 2 * script.tick_size
             upper_end = entry + 2 * script.tick_size
             if lower_end <= ltp <= upper_end:
