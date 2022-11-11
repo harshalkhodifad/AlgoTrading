@@ -29,13 +29,49 @@ class Algorithm:
             script_lock.acquire()
             position_lock.acquire()
             if self.should_create_new_position(script):
-                p = self.create_position(script)
-                if p is not None:
-                    logger.info("Entry: {}".format(p))
+                position = self.create_position(script)
+                if position is not None:
+                    logger.info("Entry: {}, Close: {}, LTP: {}, OPEN: {}, HIGH: {}, LOW: {}, "
+                                    "%CHNG: {}, Entry: {}".format(position.strategy.value,
+                                                                             position.script.close,
+                                                                             position.script.ltp,
+                                                                             position.script.open,
+                                                                             position.script.high,
+                                                                             position.script.low,
+                                                                             round_off((position.script.ltp - position.script.close) * 100 / position.script.close),
+                                                                             position.entry_price))
+                    print("Entry: {}, Close: {}, LTP: {}, OPEN: {}, HIGH: {}, LOW: {}, "
+                                    "%CHNG: {}, Entry: {}".format(position.strategy.value,
+                                                                             position.script.close,
+                                                                             position.script.ltp,
+                                                                             position.script.open,
+                                                                             position.script.high,
+                                                                             position.script.low,
+                                                                             round_off((position.script.ltp - position.script.close) * 100 / position.script.close),
+                                                                             position.entry_price))
             else:
-                p = self.update_position(script)
-                if p is not None:
-                    logger.info("Exit: {}".format(p))
+                position = self.update_position(script)
+                if position is not None:
+                    logger.info("Exit: {}, Close: {}, LTP: {}, OPEN: {}, HIGH: {}, LOW: {}, "
+                                    "%CHNG: {}, Entry: {}, Exit: {} ".format(position.strategy.value,
+                                                                             position.script.close,
+                                                                             position.script.ltp,
+                                                                             position.script.open,
+                                                                             position.script.high,
+                                                                             position.script.low,
+                                                                             round_off((position.script.ltp - position.script.close) * 100 / position.script.close),
+                                                                             position.entry_price,
+                                                                             position.exit_price))
+                    print("Exit: {}, Close: {}, LTP: {}, OPEN: {}, HIGH: {}, LOW: {}, "
+                                    "%CHNG: {}, Entry: {}, Exit: {} ".format(position.strategy.value,
+                                                                             position.script.close,
+                                                                             position.script.ltp,
+                                                                             position.script.open,
+                                                                             position.script.high,
+                                                                             position.script.low,
+                                                                             round_off((position.script.ltp - position.script.close) * 100 / position.script.close),
+                                                                             position.entry_price,
+                                                                             position.exit_price))
         finally:
             position_lock.release()
             script_lock.release()
@@ -116,6 +152,7 @@ class Algorithm:
     def square_off(self):
         try:
             logger.info("Waiting for positions to close")
+            print("Waiting for positions to close")
             time.sleep(20)
             now = datetime.datetime.now()
             position_mutex.acquire()
@@ -123,7 +160,25 @@ class Algorithm:
                 for position in positions_db[key].values():
                     if not position.closed:
                         self.close_position(position, position.script.ltp, now)
-                        logger.info("Square Off: {}".format(position))
+                        logger.info("Square Off: Close: {}, LTP: {}, OPEN: {}, HIGH: {}, LOW: {}, "
+                                    "%CHNG: {}, Entry: {}, Exit: {} ".format(position.script.close,
+                                                                             position.script.ltp,
+                                                                             position.script.open,
+                                                                             position.script.high,
+                                                                             position.script.low,
+                                                                             round_off((position.script.ltp - position.script.close) * 100/position.script.close),
+                                                                             position.entry_price,
+                                                                             position.exit_price))
+                        print("Square Off: Close: {}, LTP: {}, OPEN: {}, HIGH: {}, LOW: {}, "
+                                    "%CHNG: {}, Entry: {}, Exit: {} ".format(position.script.close,
+                                                                             position.script.ltp,
+                                                                             position.script.open,
+                                                                             position.script.high,
+                                                                             position.script.low,
+                                                                             round_off((
+                                                                                                   position.script.ltp - position.script.close) * 100 / position.script.close),
+                                                                             position.entry_price,
+                                                                             position.exit_price))
         finally:
             position_mutex.release()
     

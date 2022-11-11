@@ -53,6 +53,7 @@ class WorkflowExecutor:
 
     def execute(self):
         logger.info("Starting trade executions")
+        print("Starting trade executions")
         # import ipdb; ipdb.set_trace()
         # self.broker.subscribe([self.broker.get_instrument_by_symbol("NFO", "AXISBANK22NOV880CE")], callback)
         self.broker.subscribe(self.nfo_data, callback)
@@ -60,7 +61,7 @@ class WorkflowExecutor:
 
         while True:
             time.sleep(1)
-            print("Running")
+            # print("Running")
             if self.exit_if_required():
                 break
 
@@ -93,11 +94,13 @@ class WorkflowExecutor:
 
     def _initialize_db(self):
         logger.info("Fetching F&O Data")
+        print("Fetching F&O Data")
         self.nfo_data, self.eq_set, self.expiry_date = self.broker.get_nfo_data(self._get_date())
         updated_nfo_data = []
         i = 0
         for instrument in self.eq_set:
             logger.info("Fetching Script: {}/{}".format(i+1, len(self.eq_set)))
+            print("Fetching Script: {}/{}".format(i+1, len(self.eq_set)))
             i+=1
             eq_instrument = self.broker.get_instrument_by_symbol("NSE", instrument.eq)
             eq_script = self.broker.get_script_info(eq_instrument)
@@ -112,6 +115,7 @@ class WorkflowExecutor:
         self.position_manager.init_position_locks()
         # TO CHANGE - Remove banned script
         logger.info("Fetched F&O Data, Total Instruments: " + str(len(Script.get_db()) // 3))
+        print("Fetched F&O Data, Total Instruments: " + str(len(Script.get_db()) // 3))
         self.nfo_data = updated_nfo_data
 
     def _find_instruments(self, eq, close) -> tuple:

@@ -2,23 +2,43 @@
 
 ## Setup Instructions:
 ```commandline
+ssh-keygen
+cat ~/.ssh/id_rsa.pub
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install python3.8
-sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1
+sudo apt-get install python3.7
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 1
 sudo update-alternatives --config python3
 sudo apt install python3-pip
 pip3 install --upgrade pip
-sudo apt-get install python3.8-venv
+sudo apt-get install python3.7-venv
 git clone git@github.com:harshalkhodifad/AlgoTrading.git
 cd AlgoTrading
 python3 -m venv venv
 source venv/bin/activate
 pip3 install --upgrade pip
-pip3 install -r requirements.txt
+pip install -r requirements.txt
 deactivate
 source venv/bin/activate
+```
+
+## Cron Setup: https://www.digitalocean.com/community/tutorials/how-to-use-cron-to-automate-tasks-ubuntu-1804
+minute hour day_of_month month day_of_week command_to_run
+```commandline
+sudo apt install cron
+sudo systemctl enable cron
+crontab -e
+sudo pkill -u root cron
+sudo pgrep -u root cron
+```
+
+## EC2 Setup:
+Follow to setup timezone on instance: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-time.html
+
+## Login:
+```commandline
+ssh -i ~/Downloads/AlgoTrading.pem ubuntu@65.2.150.58
 ```
 
 ## Logic
