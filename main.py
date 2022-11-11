@@ -80,7 +80,7 @@ class WorkflowExecutor:
     def exit_if_required(self):
         global square_off_in_progress
         now = datetime.datetime.now()
-        if now.hour == 15 and now.minute == 15:
+        if now.hour == 15 and now.minute == 20:
             square_off_in_progress = True
             self.broker.unsubscribe(self.nfo_data)
             print("Square off initiated")
