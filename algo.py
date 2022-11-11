@@ -31,8 +31,9 @@ class Algorithm:
             if self.should_create_new_position(script):
                 position = self.create_position(script)
                 if position is not None:
-                    logger.info("Entry: {}, Close: {}, LTP: {}, OPEN: {}, HIGH: {}, LOW: {}, "
-                                    "%CHNG: {}, Entry: {}".format(position.strategy.value,
+                    logger.info("Entry: {}-{}, Close: {}, LTP: {}, OPEN: {}, HIGH: {}, LOW: {}, "
+                                    "%CHNG: {}, Entry: {}".format(position.script.symbol,
+                                                                             position.strategy.value,
                                                                              position.script.close,
                                                                              position.script.ltp,
                                                                              position.script.open,
@@ -40,8 +41,9 @@ class Algorithm:
                                                                              position.script.low,
                                                                              round_off((position.script.ltp - position.script.close) * 100 / position.script.close),
                                                                              position.entry_price))
-                    print("Entry: {}, Close: {}, LTP: {}, OPEN: {}, HIGH: {}, LOW: {}, "
-                                    "%CHNG: {}, Entry: {}".format(position.strategy.value,
+                    print("Entry: {}-{}, Close: {}, LTP: {}, OPEN: {}, HIGH: {}, LOW: {}, "
+                                    "%CHNG: {}, Entry: {}".format(position.script.symbol,
+                                                                             position.strategy.value,
                                                                              position.script.close,
                                                                              position.script.ltp,
                                                                              position.script.open,
@@ -52,8 +54,9 @@ class Algorithm:
             else:
                 position = self.update_position(script)
                 if position is not None:
-                    logger.info("Exit: {}, Close: {}, LTP: {}, OPEN: {}, HIGH: {}, LOW: {}, "
-                                    "%CHNG: {}, Entry: {}, Exit: {} ".format(position.strategy.value,
+                    logger.info("Exit: {}-{}, Close: {}, LTP: {}, OPEN: {}, HIGH: {}, LOW: {}, "
+                                    "%CHNG: {}, Entry: {}, Exit: {} ".format(position.script.symbol,
+                                                                             position.strategy.value,
                                                                              position.script.close,
                                                                              position.script.ltp,
                                                                              position.script.open,
@@ -62,8 +65,9 @@ class Algorithm:
                                                                              round_off((position.script.ltp - position.script.close) * 100 / position.script.close),
                                                                              position.entry_price,
                                                                              position.exit_price))
-                    print("Exit: {}, Close: {}, LTP: {}, OPEN: {}, HIGH: {}, LOW: {}, "
-                                    "%CHNG: {}, Entry: {}, Exit: {} ".format(position.strategy.value,
+                    print("Exit: {}-{}, Close: {}, LTP: {}, OPEN: {}, HIGH: {}, LOW: {}, "
+                                    "%CHNG: {}, Entry: {}, Exit: {} ".format(position.script.symbol,
+                                                                             position.strategy.value,
                                                                              position.script.close,
                                                                              position.script.ltp,
                                                                              position.script.open,
@@ -160,8 +164,9 @@ class Algorithm:
                 for position in positions_db[key].values():
                     if not position.closed:
                         self.close_position(position, position.script.ltp, now)
-                        logger.info("Square Off: Close: {}, LTP: {}, OPEN: {}, HIGH: {}, LOW: {}, "
-                                    "%CHNG: {}, Entry: {}, Exit: {} ".format(position.script.close,
+                        logger.info("Square Off: {} Close: {}, LTP: {}, OPEN: {}, HIGH: {}, LOW: {}, "
+                                    "%CHNG: {}, Entry: {}, Exit: {} ".format(position.script.symbol,
+                                                                             position.script.close,
                                                                              position.script.ltp,
                                                                              position.script.open,
                                                                              position.script.high,
@@ -169,8 +174,9 @@ class Algorithm:
                                                                              round_off((position.script.ltp - position.script.close) * 100/position.script.close),
                                                                              position.entry_price,
                                                                              position.exit_price))
-                        print("Square Off: Close: {}, LTP: {}, OPEN: {}, HIGH: {}, LOW: {}, "
-                                    "%CHNG: {}, Entry: {}, Exit: {} ".format(position.script.close,
+                        print("Square Off: {} Close: {}, LTP: {}, OPEN: {}, HIGH: {}, LOW: {}, "
+                                    "%CHNG: {}, Entry: {}, Exit: {} ".format(position.script.symbol,
+                                                                             position.script.close,
                                                                              position.script.ltp,
                                                                              position.script.open,
                                                                              position.script.high,
