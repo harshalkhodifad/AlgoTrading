@@ -32,7 +32,7 @@ class Broker:
     def get_nfo_data(self, now):
         next_month = now + relativedelta.relativedelta(months=1)
         fno_data = list(
-            filter(lambda x: x.instrument_type == "OPTSTK" and x.exchange == "NFO" and x.symbol.startswith("A")
+            filter(lambda x: x.instrument_type == "OPTSTK" and x.exchange == "NFO"
                              and ((
                                               now.month == x.expiry.month and now.year == x.expiry.year and now.day != x.expiry.day)
                                   or (next_month.month == x.expiry.month and next_month.year == x.expiry.year)),
