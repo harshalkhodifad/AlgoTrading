@@ -45,3 +45,11 @@ def read_file(name):
     ds = pickle.load(f)
     f.close()
     return ds
+
+
+def write_csv(ds, name):
+    csv_f = open(name, "w")
+    csv_f.write("time,open,high,low,close,volume\n")
+    for data in ds:
+        csv_f.write(f"{data.time},{data.open},{data.high},{data.low},{data.close},{data.close}\n")
+    csv_f.close()

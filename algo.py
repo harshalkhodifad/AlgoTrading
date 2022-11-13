@@ -82,7 +82,7 @@ class Algorithm:
 
     def should_create_new_position(self, script: Script):
         now = datetime.datetime.now()
-        if (now.hour*60 + now.minute) >= (14*60 + 10):
+        if (now.hour*60 + now.minute) >= (14*60 + 30):
             return False
         elif script.ltp < MIN_OPTION_PRICE:
             return False

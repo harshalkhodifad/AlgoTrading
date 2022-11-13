@@ -1048,6 +1048,7 @@ class AliceBlue:
         response = self.__api_call(url, http_method, data)
         if response.status_code != 200:
             raise requests.HTTPError(response.text)
+        # import ipdb; ipdb.set_trace()
         return response.json()
 
     def __api_call(self, url, http_method, data):

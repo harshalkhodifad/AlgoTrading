@@ -47,7 +47,7 @@ class Broker:
         return fno_data, eq_set, fno_data[0].expiry
 
     def get_historical_data(self, instrument, fr, to) -> List[HistoricalData]:
-        l = self.client.historical_data(instrument, fr, to, HistoricalDataType.Minute).get('result')
+        l = self.client.historical_data(instrument, fr, to, HistoricalDataType.Minute).get('result', [])
         ll = []
         for x in l:
             ll.append(HistoricalData(x))

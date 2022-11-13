@@ -152,6 +152,7 @@ class Position:
 class HistoricalData:
 
     def __init__(self, data):
+        #import ipdb; ipdb.set_trace()
         # {'volume': 2400.0, 'high': 32.3, 'low': 32.3, 'time': '2022-10-27 15:30:59', 'close': 32.3, 'open': 32.3}
         self.high = convert_to_float(data.get('high'))
         self.low = convert_to_float(data.get('low'))
@@ -161,8 +162,8 @@ class HistoricalData:
         self.time = datetime.datetime.strptime(data.get('time'), '%Y-%m-%d %H:%M:%S')
 
     def __repr__(self):
-        return ""
-        # return f"HistoricalData: {self.__dict__}"
+        #return ""
+        return f"HistoricalData: {self.__dict__}"
 
 
 class BackTestScript:
