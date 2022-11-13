@@ -23,23 +23,16 @@ scripts = {
 # multiple targets
 
 logger = logging.getLogger("BACKTEST")
-year = int(input("Enter year: "))
-st = datetime.datetime(year, 1, 1)
-et = datetime.datetime(year+1, 1, 1)
-file_name = st.strftime("resources/eq_nifty_50_data_%Y.pickle")
-csv_name = st.strftime("resources/eq_nifty_50_data_%Y.csv")
-hst = []
-if os.path.isfile(file_name):
-    # logger.info("Reading from file")
-    hst = read_file(file_name)
-else:
-    # logger.info("Fetching data")
-    broker = Broker()
-    inst = broker.get_instrument_by_symbol("NSE", "AXISBANK-EQ")
-    import ipdb; ipdb.set_trace()
+eq_list = get_nifty_500_list()
+broker = Broker()
+for i, eq in enumerate(eq_list):
+    inst = broker.get_instrument_by_symbol("NSE", eq+"-EQ")
+    st = datetime.datetime(2021, 1, 1)
+    et = datetime.datetime(2022, 1, 1)
+    hst = []
+    csv_name = st.strftime(f"resources/eq_data/{inst.symbol}_data_%Y.csv")
     while True:
-        print("Fetching for: ")
-        print(st)
+        logger.info(f"Fetching for: {i+1}th equity: {eq}, for 2 days from: {st}")
         mt = datetime.timedelta(days=2) + st
         ett = min(mt, et)
         data = broker.get_historical_data(inst, st, ett)
@@ -47,10 +40,7 @@ else:
         if mt >= et:
             break
         st = mt
-
-write_file(hst, file_name)
-import ipdb; ipdb.set_trace()
-write_csv(hst, csv_name)
+    write_csv(hst, csv_name)
 
 
 def main():

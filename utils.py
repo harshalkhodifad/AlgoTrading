@@ -1,5 +1,9 @@
+import configurations
 import datetime
 import pickle
+import logging
+
+logger = logging.getLogger("UTILS")
 
 
 def round_off(value, precision=0.05):
@@ -53,3 +57,10 @@ def write_csv(ds, name):
     for data in ds:
         csv_f.write(f"{data.time},{data.open},{data.high},{data.low},{data.close},{data.close}\n")
     csv_f.close()
+    logger.info(f"CSV written to disk: {name}")
+
+
+def get_nifty_500_list():
+    f = open("resources/ind_nifty500list.csv")
+    f.readline()
+    return list(map(lambda x: x.split(',')[2], f.readlines()))

@@ -26,7 +26,7 @@ class Broker:
         # print(script_details)
         return Script(eq_instrument, script_details=self.client.get_script_info(eq_instrument))
 
-    def get_instrument_by_symbol(self, exch, symbol):
+    def get_instrument_by_symbol(self, exch, symbol) -> Instrument:
         return self.client.get_instrument_by_symbol(exch, symbol)
 
     def get_nfo_data(self, now):
