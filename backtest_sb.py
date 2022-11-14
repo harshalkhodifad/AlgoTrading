@@ -26,8 +26,6 @@ logger = logging.getLogger("BACKTEST")
 eq_list = get_nifty_500_list()
 broker = Broker()
 for i, eq in enumerate(eq_list):
-    if i < 26:
-        continue
     inst = broker.get_instrument_by_symbol("NSE", eq+"-EQ")
     if inst is None:
         logger.info(f"Couldn't find {eq} and skipping")
@@ -36,6 +34,8 @@ for i, eq in enumerate(eq_list):
     et = datetime.datetime(2022, 1, 1)
     hst = []
     csv_name = st.strftime(f"resources/eq_data/{inst.symbol}_data_%Y.csv")
+    if os.path.isfile(csv_name):
+        continue
     while True:
         logger.info(f"Fetching for: {i+1}th equity: {eq}, for 2 days from: {st}")
         mt = datetime.timedelta(days=2) + st
