@@ -3,7 +3,7 @@
 ## Setup Instructions:
 ```commandline
 ssh-keygen
-cat ~/.ssh/id_rsa.pub
+cat ~/.ssh/id_rsa.pub -> Add this to github allowed keys
 sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt-get update
 sudo apt-get upgrade
@@ -28,9 +28,21 @@ minute hour day_of_month month day_of_week command_to_run
 ```commandline
 sudo apt install cron
 sudo systemctl enable cron
+run_algo - command name: /bin/run_algo -> chmod +x run_algo
+
+cd /home/ubuntu/AlgoTrading
+source venv/bin/activate
+nohup /home/ubuntu/AlgoTrading/venv/bin/python3 main.py &
+
 crontab -e
-sudo pkill -u root cron
-sudo pgrep -u root cron
+# minute hour day_of_month month day_of_week(0 to 6 - 0=Sunday) command
+0 8 * * 1-5 run_algo
+
+service cron status
+service cron stop
+sudo pkill -u root python
+sudo pgrep -u root python
+ps -Af | grep python
 ```
 
 ## EC2 Setup:
