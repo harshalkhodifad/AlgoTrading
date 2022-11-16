@@ -1,4 +1,5 @@
 .idea/
 algo-trading*
+resources/
 __pycache__/
 venv

@@ -63,7 +63,13 @@ Follow to setup timezone on instance: https://docs.aws.amazon.com/AWSEC2/latest/
 
 ## Login:
 ```commandline
-ssh -i ~/Downloads/AlgoTrading.pem ubuntu@65.2.150.58
+ssh -i ~/Downloads/AlgoTrading.pem ubuntu@65.0.106.209
+```
+
+## Data transfer: 
+Reference - https://www.hostinger.in/tutorials/how-to-use-rsync
+```commandline
+rsync -avhzrP -e "ssh -i ~/Downloads/AlgoTrading.pem" ubuntu@65.0.106.209:~/AlgoTrading/resources/eq_data/ ~/Desktop/Projects/AlgoTrading/resources/eq_data/
 ```
 
 ## Logic
