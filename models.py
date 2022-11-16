@@ -113,7 +113,7 @@ class Position:
 
     @staticmethod
     def get_position(symbol: string):
-        return positions_db[symbol]
+        return positions_db.get(symbol)
 
     @staticmethod
     def add_position(position):

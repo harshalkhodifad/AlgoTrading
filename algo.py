@@ -43,6 +43,8 @@ class Algorithm:
 
             script_lock.release() if script_lock.locked() else None
             logger.info("Script lock release")
+        except Exception as e:
+            logger.error("Error occurred: ", e, exc_info=True)
         finally:
             script_lock.release() if script_lock.locked() else None
             global_lock.release() if global_lock.locked() else None

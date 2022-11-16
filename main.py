@@ -35,6 +35,7 @@ square_off_in_progress = False
 
 def callback(script):
     global square_off_in_progress
+    print(script)
     algo.process(script, square_off_in_progress)
 
 
@@ -56,6 +57,7 @@ class WorkflowExecutor:
         print("Starting trade executions")
         # import ipdb; ipdb.set_trace()
         # self.broker.subscribe([self.broker.get_instrument_by_symbol("NFO", "AXISBANK22NOV880CE")], callback)
+        print(self.nfo_data)
         self.broker.subscribe(self.nfo_data, callback)
         # feed_dummy_data(callback)
 
