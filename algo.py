@@ -134,20 +134,15 @@ class Algorithm:
         return None
 
     def square_off(self):
-        try:
-            logger.info("Waiting for positions to close")
-            print("Waiting for positions to close")
-            time.sleep(5)
-            now = datetime.datetime.now()
-            global_lock.acquire()
-            positions = Position.get_db()
-            for position in positions.values():
-                if not position.closed:
-                    self.close_position(position, position.script.ltp, now, "Square Off")
-                    logger.info(position.summary)
-            global_lock.release() if global_lock.locked() else None
-        finally:
-            global_lock.release() if global_lock.locked() else None
+        logger.info("Waiting for positions to close")
+        print("Waiting for positions to close")
+        time.sleep(5)
+        now = datetime.datetime.now()
+        positions = Position.get_db()
+        for position in positions.values():
+            if not position.closed:
+                self.close_position(position, position.script.ltp, now, "Square Off")
+                logger.info(position.summary)
 
     def create_new_position(self, script: Script, price: float, now: datetime.datetime, qty: int, stg: Strategy):
         p = Position(script, price, now, qty, stg)

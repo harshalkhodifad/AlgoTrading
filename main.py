@@ -38,7 +38,6 @@ exit_signal = False
 
 def callback(script):
     global square_off_in_progress
-    print("Running")
     algo.process(script, square_off_in_progress)
 
 
