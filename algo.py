@@ -23,8 +23,11 @@ class Algorithm:
             return
         scrpt = Script(instrument=script.get('instrument'), subscription_details=script)
         script_lock = None
+        now = datetime.datetime.now()
         try:
             global_lock.acquire()
+            if now.second == 1:
+                print("Running")
             script_lock = self.position_manager.get_or_create_script_lock(scrpt.symbol)
             script_lock.acquire()
             global_lock.release() if global_lock.locked() else None
