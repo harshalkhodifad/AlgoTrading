@@ -7,6 +7,8 @@ logger.info("Starting...")
 
 
 import datetime
+import signal
+import sys
 
 from broker import Broker
 from algo import Algorithm
@@ -31,6 +33,7 @@ broker = Broker()
 position_manager = PositionsManager()
 algo = Algorithm(position_manager)
 square_off_in_progress = False
+exit_signal = False
 
 
 def callback(script):
@@ -61,7 +64,7 @@ class WorkflowExecutor:
         self.broker.subscribe(self.nfo_data, callback)
         # feed_dummy_data(callback)
 
-        while True:
+        while not exit_signal:
             time.sleep(1)
             # print("Running")
             if self.exit_if_required():
@@ -84,7 +87,7 @@ class WorkflowExecutor:
         now = datetime.datetime.now()
         if now.hour == 15 and now.minute == 20:
             square_off_in_progress = True
-            self.broker.unsubscribe(self.nfo_data)
+            self.close_websocket()
             print("Square off initiated")
             logger.info("Square off initiated")
             algo.square_off()
@@ -95,6 +98,14 @@ class WorkflowExecutor:
             return True
         else:
             return False
+
+    def close_websocket(self, sig=None, frame=None):
+        global exit_signal
+        exit_signal = True
+        time.sleep(5)
+        logger.info("Closing web socket")
+        self.broker.unsubscribe(self.nfo_data)
+        self.broker.client.close_websocket()
 
     def _initialize_db(self):
         logger.info("Fetching F&O Data")
@@ -157,6 +168,7 @@ class WorkflowExecutor:
 def main():
     logger.info("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
     we = WorkflowExecutor(broker, position_manager)
+    signal.signal(signal.SIGINT, we.close_websocket)
     we.start()
     logger.info("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 
