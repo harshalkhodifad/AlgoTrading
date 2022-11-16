@@ -1,5 +1,6 @@
 .idea/
 algo-trading*
 resources/*
+nohup.out
 __pycache__/
 venv
