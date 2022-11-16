@@ -24,19 +24,25 @@ class Algorithm:
         scrpt = Script(instrument=script.get('instrument'), subscription_details=script)
         script_lock = None
         try:
+            logger.info("G ACQ")
             global_lock.acquire()
             script_lock = self.position_manager.get_or_create_script_lock(scrpt.symbol)
             script_lock.acquire()
             global_lock.release() if global_lock.locked() else None
 
+            logger.info("G RELEASE")
             script = self.position_manager.update_script(scrpt)
 
+            logger.info("Check create position")
             if self.should_create_new_position(script):
+                logger.info("Create position")
                 self.create_position(script)
             else:
+                logger.info("Update position")
                 self.update_position(script)
 
             script_lock.release() if script_lock.locked() else None
+            logger.info("Script lock release")
         finally:
             script_lock.release() if script_lock.locked() else None
             global_lock.release() if global_lock.locked() else None
