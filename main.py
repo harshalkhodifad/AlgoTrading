@@ -28,8 +28,11 @@ from constants import *
 
 from aliceblue_v2 import Alice
 
+credential_index = 1
+if len(sys.argv) > 1:
+    credential_index = int(sys.argv[1])
 
-broker = Broker()
+broker = Broker(credential_index)
 position_manager = PositionsManager()
 algo = Algorithm(position_manager)
 square_off_in_progress = False

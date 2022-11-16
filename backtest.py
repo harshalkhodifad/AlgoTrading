@@ -32,7 +32,7 @@ if os.path.isfile(file_name):
     scripts = read_file(file_name)
 else:
     # logger.info("Fetching data")
-    broker = Broker()
+    broker = Broker(1)
     yesterday = today - datetime.timedelta(days=3 if today.isoweekday() == 1 else 1)
     y_fr, y_to = yesterday + datetime.timedelta(hours=15, minutes=29), \
                                    yesterday + datetime.timedelta(hours=15, minutes=31)

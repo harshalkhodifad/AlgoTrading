@@ -24,7 +24,7 @@ scripts = {
 
 logger = logging.getLogger("BACKTEST")
 eq_list = get_nifty_500_list()
-broker = Broker()
+broker = Broker(1)
 for i, eq in enumerate(eq_list):
     inst = broker.get_instrument_by_symbol("NSE", eq+"-EQ")
     if inst is None:

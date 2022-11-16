@@ -18,8 +18,8 @@ logger = logging.getLogger(__name__)
 
 class Broker:
 
-    def __init__(self):
-        self.client = AliceClient()
+    def __init__(self, credential_index):
+        self.client = AliceClient(credential_index)
 
     def get_script_info(self, eq_instrument) -> Script:
         script_details = self.client.get_script_info(eq_instrument)
@@ -62,13 +62,15 @@ class Broker:
 
 class AliceClient(AliceBlue):
 
-    def __init__(self):
+    def __init__(self, credential_index):
         logger.info("Connecting to AliceBlue")
-        super().__init__(username=USERNAME, session_id=AliceBlue.login_and_get_sessionID(username=USERNAME,
-                                                                                         password=PASSWORD,
-                                                                                         twoFA=DOB,
-                                                                                         app_id=APP_SECRET,
-                                                                                         api_secret=APP_API_KEY))
+        creds = CREDS[credential_index]
+        super(AliceClient, self).__init__(username=creds.username,
+                                          session_id=AliceBlue.login_and_get_sessionID(username=creds.username,
+                                                                                       password=creds.password,
+                                                                                       twoFA=creds.dob,
+                                                                                       app_id=creds.app_secret,
+                                                                                       api_secret=creds.app_api_key))
         logger.info("Connected to AliceBlue")
 
     def subscribe_instruments(self, instruments: List[Instrument], callback_fn):

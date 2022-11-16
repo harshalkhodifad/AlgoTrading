@@ -1,4 +1,7 @@
 import enum
+from collections import namedtuple
+
+Credentials = namedtuple('Credentials', ['username', 'password', 'dob', 'app_secret', 'app_api_key'])
 
 # Login credentials - Trushar
 # USERNAME = "720105"
@@ -10,14 +13,21 @@ import enum
 # AUTH_CODE = "TUB2ZY449SQA6I6RDLYU"
 # SESSION_ID = "1uVstmmUbmh2X3fXlKfmH9jpvJayfZIrIbqF34z5OWLppD7ozzjiCLlIgmERhMEtpGQ4UcxSaFvKdGJ7JqdqFFWpH2Lshl4KhkkYPQU3BrtOHYgyLLeccqmZfMW8kfTqVGUVxFQIAHrCRTesSlbS4rfLfHFUBWxpUhN5AvrGXFkM8nGQBaDmZ3zVKOpdHqJqkcdDhpj4tZJraeBG4ddiefPOxmQp3aFPJnlu9LxinCEhUzEgxCcqDoEnzg7iL8dc"
 
-# Login credential - HK
-USERNAME = "722413"
-PASSWORD = "Alice@22"
-DOB = "1234"
-APP_SECRET = "XUkELqxrJUGsQhg"
-# APP_SECRET = "DYRgOIvSvEIaZKl"
-APP_API_KEY = "bXDSLDcKUnZbjmzLqRpvBdhQfAqBCENZLKquDbapoddmvMmDNiJOCzjutoMZSJCIpiLphaGXJAJjaoaTXqZVecerkAhFVmRRsglj"
-# APP_API_KEY = "BDNgyikQXqNBnarhlkkhpCeJPgsoJoUchhjGzxMeoFnMOCDJggcMceRaFtRmTbOzQgysvVnESoSgzvMjUZAMODvQWCVBXxLOYnzG"
+CREDS = [Credentials("720105",
+                     "india18722",
+                     "1234",
+                     "XWovilUdgu7zQrW",
+                     "sT0hgWxlQfJ4zK4iIfdHtApvc5VQyM1qSizHos5cDvXXedZK8gOMGrLXKHOi1m7t6DU7qiGP8t4IvulIZJgXv77a66j0PQHtCSL3"),
+         Credentials("722413",
+                     "Alice@22",
+                     "1234",
+                     "XUkELqxrJUGsQhg",
+                     "bXDSLDcKUnZbjmzLqRpvBdhQfAqBCENZLKquDbapoddmvMmDNiJOCzjutoMZSJCIpiLphaGXJAJjaoaTXqZVecerkAhFVmRRsglj"),
+         Credentials("722413",
+                     "Alice@22",
+                     "1234",
+                     "DYRgOIvSvEIaZKl",
+                     "BDNgyikQXqNBnarhlkkhpCeJPgsoJoUchhjGzxMeoFnMOCDJggcMceRaFtRmTbOzQgysvVnESoSgzvMjUZAMODvQWCVBXxLOYnzG"), ]
 
 # General
 QTY = 1

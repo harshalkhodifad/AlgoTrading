@@ -12,5 +12,6 @@ class A:
 a = A()
 
 signal.signal(signal.SIGINT, a.signal_handler)
-time.sleep(10)
+time.sleep(2)
+print(len(sys.argv))
 print('Press Ctrl+C')
