@@ -45,6 +45,19 @@ sudo pgrep -u root python
 ps -Af | grep python
 ```
 
+## Permissions setup shared with root
+Reference: https://superuser.com/questions/19318/how-can-i-give-write-access-of-a-folder-to-all-users-in-linux
+```commandline
+sudo groupadd root_users
+sudo usermod -a -G root_users ubuntu
+sudo usermod -a -G root_users root
+sudo chgrp -R root_users AlgoTrading/
+sudo chmod -R g+w AlgoTrading/
+sudo find AlgoTrading/ -type d -exec chmod 2775 {} \;
+sudo find AlgoTrading/ -type f -exec chmod ug+rw {} \;
+# <logout & login>
+```
+
 ## EC2 Setup:
 Follow to setup timezone on instance: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-time.html
 
