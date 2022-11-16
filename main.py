@@ -38,7 +38,6 @@ exit_signal = False
 
 def callback(script):
     global square_off_in_progress
-    print(script)
     algo.process(script, square_off_in_progress)
 
 
@@ -102,8 +101,8 @@ class WorkflowExecutor:
     def close_websocket(self, sig=None, frame=None):
         global exit_signal
         exit_signal = True
-        time.sleep(5)
         logger.info("Closing web socket")
+        time.sleep(3)
         self.broker.unsubscribe(self.nfo_data)
         self.broker.client.close_websocket()
 

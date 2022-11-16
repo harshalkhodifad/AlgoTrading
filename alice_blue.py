@@ -566,7 +566,7 @@ class AliceBlue:
         self.__ws_send(data)
 
     def close_websocket(self):
-        self.__websocket.teardown() if self.__websocket else None
+        self.__websocket.close() if self.__websocket else None
 
     def get_profile(self):
         """ Get profile """
