@@ -125,7 +125,7 @@ class Position:
 
     @property
     def margin(self) -> float:
-        return self.qty * self.entry_price * self.script.lot_size
+        return round(self.qty * self.entry_price * self.script.lot_size, 2)
 
     @property
     def charges(self):

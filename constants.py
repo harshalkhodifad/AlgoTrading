@@ -14,10 +14,10 @@ import enum
 USERNAME = "722413"
 PASSWORD = "Alice@22"
 DOB = "1234"
-# APP_SECRET = "XUkELqxrJUGsQhg"
-APP_SECRET = "DYRgOIvSvEIaZKl"
-# APP_API_KEY = "bXDSLDcKUnZbjmzLqRpvBdhQfAqBCENZLKquDbapoddmvMmDNiJOCzjutoMZSJCIpiLphaGXJAJjaoaTXqZVecerkAhFVmRRsglj"
-APP_API_KEY = "BDNgyikQXqNBnarhlkkhpCeJPgsoJoUchhjGzxMeoFnMOCDJggcMceRaFtRmTbOzQgysvVnESoSgzvMjUZAMODvQWCVBXxLOYnzG"
+APP_SECRET = "XUkELqxrJUGsQhg"
+# APP_SECRET = "DYRgOIvSvEIaZKl"
+APP_API_KEY = "bXDSLDcKUnZbjmzLqRpvBdhQfAqBCENZLKquDbapoddmvMmDNiJOCzjutoMZSJCIpiLphaGXJAJjaoaTXqZVecerkAhFVmRRsglj"
+# APP_API_KEY = "BDNgyikQXqNBnarhlkkhpCeJPgsoJoUchhjGzxMeoFnMOCDJggcMceRaFtRmTbOzQgysvVnESoSgzvMjUZAMODvQWCVBXxLOYnzG"
 
 # General
 QTY = 1
