@@ -88,6 +88,8 @@ class WorkflowExecutor:
             algo.square_off()
             print("Square off completed")
             logger.info("Square off completed")
+            self.position_manager.print_summary()
+            self.save_positions_data()
             return True
         else:
             return False
@@ -107,16 +109,24 @@ class WorkflowExecutor:
             ce_instrument, ce_close, pe_instrument, pe_close = self._find_instruments(eq_script.symbol, eq_script.close)
             ce_script, pe_script = self.broker.get_script_info(ce_instrument), self.broker.get_script_info(pe_instrument)
             ce_script.derived_from, pe_script.derived_from = ce_close, pe_close
+
             self.position_manager.update_script(eq_script)
             self.position_manager.update_script(ce_script)
             self.position_manager.update_script(pe_script)
+
+            self.position_manager.get_or_create_script_lock(eq_script.symbol)
+            self.position_manager.get_or_create_script_lock(ce_script.symbol)
+            self.position_manager.get_or_create_script_lock(pe_script.symbol)
+
             updated_nfo_data.append(ce_instrument)
             updated_nfo_data.append(pe_instrument)
-        self.position_manager.init_position_locks()
         # TO CHANGE - Remove banned script
         logger.info("Fetched F&O Data, Total Instruments: " + str(len(Script.get_db()) // 3))
         print("Fetched F&O Data, Total Instruments: " + str(len(Script.get_db()) // 3))
         self.nfo_data = updated_nfo_data
+
+    def save_positions_data(self):
+        pass
 
     def _find_instruments(self, eq, close) -> tuple:
         ce_close, pe_close = self.get_rounded_close(close)

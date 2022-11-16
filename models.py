@@ -82,6 +82,10 @@ class Script:
         else:
             return None
 
+    @property
+    def change_percentage(self):
+        return round((self.ltp - self.close) * 100 / self.close, 2)
+
     def __repr__(self):
         return f"Script: {self.__dict__}\n"
         # return f"Script: {self.symbol} {self.ltp}\n"
@@ -91,13 +95,14 @@ class Position:
 
     def __init__(self, script: Script, entry_price, entry_time: datetime.datetime, qty, strategy: Strategy):
         self.script = script
-        self.entry_price = entry_price
         self.low = entry_price
         self.high = entry_price
+        self.entry_price = entry_price
         self.entry_time = entry_time
+        self.entry_reason = ""
         self.exit_price = None
         self.exit_time = None
-        self.target_i = 0
+        self.exit_reason = ""
         self.qty = qty
         self.strategy = strategy
         self.closed = False
@@ -114,16 +119,13 @@ class Position:
     def add_position(position):
         Position.get_db()[position.symbol] = position
 
-    @staticmethod
-    def get_pnl():
-        total_pnl = 0.00
-        for position in positions_db.values():
-            total_pnl += position.profit
-        return total_pnl
+    @property
+    def gross_pnl(self):
+        return round((self.exit_price - self.entry_price) * self.script.lot_size * self.qty, 2)
 
-    def close(self):
-        self.closed = True
-        self.exit_price = self.script.ltp
+    @property
+    def margin(self) -> float:
+        return self.qty * self.entry_price * self.script.lot_size
 
     @property
     def charges(self):
@@ -144,9 +146,21 @@ class Position:
     def sl(self) -> float:
         return 0.0
 
+    @property
+    def summary(self):
+        if not self.closed:
+            return f"{self.strategy.value} Entry {self.script.symbol} - Entry Price: {self.entry_price}, " \
+                   f"CLOSE: {self.script.close}, OPEN: {self.script.open}, LOW: {self.script.low}, " \
+                   f"HIGH: {self.script.high}, %CHANGE: {self.script.change_percentage}, " \
+                   f"LOT: {self.script.lot_size}, MARGIN USED: {self.margin}\n"
+        else:
+            return f"{self.strategy.value} Exit {self.script.symbol} - Gross PnL: {self.gross_pnl}, " \
+                   f"Entry Price: {self.entry_price}, Exit Price: {self.exit_price}, OPEN: {self.script.open}, " \
+                   f"LOW: {self.script.low}, HIGH: {self.script.high}, %CHANGE: {self.script.change_percentage}, " \
+                   f"LOT: {self.script.lot_size}, MARGIN USED: {self.margin}, Reason: {self.exit_reason}\n"
+
     def __repr__(self):
-        return f"Position profit: {self.profit}, Details: {self.__dict__}\n"
-        # return f"Position: {self.strategy.value} {self.symbol} {self.entry_price} {self.script.ltp} {self.profit}\n"
+        return f"Position: {self.__dict__}\n"
 
 
 class HistoricalData:

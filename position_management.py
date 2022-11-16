@@ -1,9 +1,10 @@
+import datetime
 import logging
 import threading
 
 from models import Script, Position
-from variables import positions_db, position_mutex, position_locks, scripts_db, script_mutex, script_locks
-from constants import QTY, Strategy
+from variables import *
+from constants import *
 
 # Global variables
 logger = logging.getLogger("PositionsManager")
@@ -14,44 +15,188 @@ class PositionsManager:
     def __init__(self):
         pass
 
-    def init_position_locks(self):
-        for symbol in script_locks:
-            self.get_or_create_position_lock(symbol)
+    @staticmethod
+    def get_position(symbol) -> Position:
+        return Position.get_position(symbol)
 
-    def get_position(self, script: Script) -> Position:
-        return positions_db.get(script.eq_symbol, {}).get(script.symbol)
-
-    def get_script(self, symbol) -> Script:
+    @staticmethod
+    def get_script(symbol) -> Script:
         return Script.get_script(symbol)
 
-    def add_position(self, position: Position):
-        positions_db[position.script.eq_symbol] = {
-            position.script.symbol: position
-        }
-        return positions_db[position.script.eq_symbol][position.script.symbol]
+    @staticmethod
+    def add_position(position: Position):
+        positions_db[position.script.symbol] = position
+        return positions_db[position.script.symbol]
 
-    def update_script(self, script: Script) -> Script:
-        script_lock = self.get_or_create_script_lock(script.symbol)
-        try:
-            script_lock.acquire(True)
-            return Script.add_or_update_script(script)
-        finally:
-            script_lock.release()
+    @staticmethod
+    def update_script(script: Script) -> Script:
+        return Script.add_or_update_script(script)
 
-    def get_or_create_position_lock(self, symbol) -> threading.Lock:
-        try:
-            position_mutex.acquire(True)
-            if symbol not in position_locks:
-                position_locks[symbol] = threading.Lock()
-            return position_locks[symbol]
-        finally:
-            position_mutex.release()
+    @staticmethod
+    def get_script_lock(symbol) -> threading.Lock:
+        return script_locks[symbol]
 
-    def get_or_create_script_lock(self, symbol) -> threading.Lock:
-        try:
-            script_mutex.acquire(True)
-            if symbol not in script_locks:
-                script_locks[symbol] = threading.Lock()
-            return script_locks[symbol]
-        finally:
-            script_mutex.release()
+    @staticmethod
+    def get_or_create_script_lock(symbol) -> threading.Lock:
+        if symbol not in script_locks:
+            script_locks[symbol] = threading.Lock()
+        return script_locks[symbol]
+
+    @staticmethod
+    def print_summary():
+        now = datetime.datetime.now()
+        positions = Position.get_db()
+        total_gross_pnl = 0
+        total_charges = 0
+        total_positive = 0
+        total_negative = 0
+
+        ce_entries = 0
+        pe_entries = 0
+        ce_exits = 0
+        pe_exits = 0
+        ce_positive = 0
+        pe_positive = 0
+        ce_negative = 0
+        pe_negative = 0
+
+        gross_pnl = 0
+        charges = 0
+
+        logger.info("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+        logger.info(now.strftime("%Y-%m-d") + " Summary: \n\n\n")
+        logger.info("REGULAR ENTRY:")
+        for position in positions.values():
+            if position.strategy.value == Strategy.REGULAR.value:
+                logger.info(position.summary)
+                if position.script.option_type.value == OptionType.CE.value:
+                    ce_entries += 1
+                    if position.exit_reason != "Square Off":
+                        ce_exits += 1
+                    if position.gross_pnl >= 0:
+                        ce_positive += 1
+                    else:
+                        ce_negative += 1
+                else:
+                    pe_entries += 1
+                    if position.exit_reason != "Square Off":
+                        pe_exits += 1
+
+                    if position.gross_pnl >= 0:
+                        pe_positive += 1
+                    else:
+                        pe_negative += 1
+
+                gross_pnl += position.gross_pnl
+                charges += position.charges
+        logger.info(f"Total trades: {ce_entries + pe_entries}")
+        logger.info(f"Total CE Entries: {ce_entries}, Exits: {ce_exits}, SquareOff: {ce_entries - ce_exits}")
+        logger.info(f"Total PE Entries: {pe_entries}, Exits: {pe_exits}, SquareOff: {pe_entries - pe_exits}")
+        logger.info(f"Total CE Positive trades: {ce_positive}, CE Negative trades: {ce_negative}")
+        logger.info(f"Total PE Positive trades: {pe_positive}, PE Negative trades: {pe_negative}")
+        logger.info(f"Gross PnL: {gross_pnl}, Charges: {charges}, Net PnL: {gross_pnl - charges}")
+        total_gross_pnl += gross_pnl
+        total_charges += charges
+        total_positive += ce_positive + pe_positive
+        total_negative += ce_negative + pe_negative
+
+        ce_entries = 0
+        pe_entries = 0
+        ce_exits = 0
+        pe_exits = 0
+        ce_positive = 0
+        pe_positive = 0
+        ce_negative = 0
+        pe_negative = 0
+
+        gross_pnl = 0
+        charges = 0
+        logger.info("\n\n\n\n\n\n\n\n")
+        logger.info("REVISED 1 ENTRY:")
+        for position in positions.values():
+            if position.strategy.value == Strategy.REVISED_1.value:
+                logger.info(position.summary)
+                if position.script.option_type.value == OptionType.CE.value:
+                    ce_entries += 1
+                    if position.exit_reason != "Square Off":
+                        ce_exits += 1
+                    if position.gross_pnl >= 0:
+                        ce_positive += 1
+                    else:
+                        ce_negative += 1
+                else:
+                    pe_entries += 1
+                    if position.exit_reason != "Square Off":
+                        pe_exits += 1
+
+                    if position.gross_pnl >= 0:
+                        pe_positive += 1
+                    else:
+                        pe_negative += 1
+
+                gross_pnl += position.gross_pnl
+                charges += position.charges
+        logger.info(f"Total trades: {ce_entries + pe_entries}")
+        logger.info(f"Total CE Entries: {ce_entries}, Exits: {ce_exits}, SquareOff: {ce_entries - ce_exits}")
+        logger.info(f"Total PE Entries: {pe_entries}, Exits: {pe_exits}, SquareOff: {pe_entries - pe_exits}")
+        logger.info(f"Total CE Positive trades: {ce_positive}, CE Negative trades: {ce_negative}")
+        logger.info(f"Total PE Positive trades: {pe_positive}, PE Negative trades: {pe_negative}")
+        logger.info(f"Gross PnL: {gross_pnl}, Charges: {charges}, Net PnL: {gross_pnl - charges}")
+        total_gross_pnl += gross_pnl
+        total_charges += charges
+        total_positive += ce_positive + pe_positive
+        total_negative += ce_negative + pe_negative
+
+        ce_entries = 0
+        pe_entries = 0
+        ce_exits = 0
+        pe_exits = 0
+        ce_positive = 0
+        pe_positive = 0
+        ce_negative = 0
+        pe_negative = 0
+
+        gross_pnl = 0
+        charges = 0
+        logger.info("\n\n\n\n\n\n\n\n")
+        logger.info("REVISED 2 ENTRY:")
+        for position in positions.values():
+            if position.strategy.value == Strategy.REVISED_2.value:
+                logger.info(position.summary)
+                if position.script.option_type.value == OptionType.CE.value:
+                    ce_entries += 1
+                    if position.exit_reason != "Square Off":
+                        ce_exits += 1
+                    if position.gross_pnl >= 0:
+                        ce_positive += 1
+                    else:
+                        ce_negative += 1
+                else:
+                    pe_entries += 1
+                    if position.exit_reason != "Square Off":
+                        pe_exits += 1
+
+                    if position.gross_pnl >= 0:
+                        pe_positive += 1
+                    else:
+                        pe_negative += 1
+
+                gross_pnl += position.gross_pnl
+                charges += position.charges
+        logger.info(f"Total trades: {ce_entries + pe_entries}")
+        logger.info(f"Total CE Entries: {ce_entries}, Exits: {ce_exits}, SquareOff: {ce_entries - ce_exits}")
+        logger.info(f"Total PE Entries: {pe_entries}, Exits: {pe_exits}, SquareOff: {pe_entries - pe_exits}")
+        logger.info(f"Total CE Positive trades: {ce_positive}, CE Negative trades: {ce_negative}")
+        logger.info(f"Total PE Positive trades: {pe_positive}, PE Negative trades: {pe_negative}")
+        logger.info(f"Gross PnL: {gross_pnl}, Charges: {charges}, Net PnL: {gross_pnl - charges}")
+        total_gross_pnl += gross_pnl
+        total_charges += charges
+        total_positive += ce_positive + pe_positive
+        total_negative += ce_negative + pe_negative
+
+        logger.info(now.strftime("%Y-%m-d") + " FINAL SUMMARY: ")
+        logger.info(f"Gross PnL: {total_gross_pnl}, Charges: {total_charges}, "
+                    f"Net PnL: {total_gross_pnl - total_charges}, Positive trades: {total_positive}, "
+                    f"Negative trades: {total_negative}")
+        logger.info("\n\n\n\n\n\n\n\n\n")
+
