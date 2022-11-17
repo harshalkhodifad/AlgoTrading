@@ -5,6 +5,7 @@ import threading
 from models import Script, Position
 from variables import *
 from constants import *
+from utils import write_file
 
 # Global variables
 logger = logging.getLogger("PositionsManager")
@@ -198,3 +199,9 @@ class PositionsManager:
         logger.info(f"Gross PnL: {total_gross_pnl}, Charges: {total_charges}, "
                     f"Net PnL: {total_gross_pnl - total_charges}, Positive trades: {total_positive}, "
                     f"Negative trades: {total_negative}\n\n\n\n\n\n\n\n")
+
+    @staticmethod
+    def save_db():
+        file_name = datetime.datetime.now().strftime("resources/positions_data/positions_data-%Y-%m-%d.pickle")
+        write_file(Position.get_db(), file_name)
+        logger.info(f"Write DB file: {file_name} to disk")

@@ -97,7 +97,7 @@ class WorkflowExecutor:
             print("Square off completed")
             logger.info("Square off completed")
             self.position_manager.print_summary()
-            self.save_positions_data()
+            self.position_manager.save_db()
             return True
         else:
             return False
@@ -140,9 +140,6 @@ class WorkflowExecutor:
         logger.info("Fetched F&O Data, Total Instruments: " + str(len(Script.get_db()) // 3))
         print("Fetched F&O Data, Total Instruments: " + str(len(Script.get_db()) // 3))
         self.nfo_data = updated_nfo_data
-
-    def save_positions_data(self):
-        pass
 
     def _find_instruments(self, eq, close) -> tuple:
         ce_close, pe_close = self.get_rounded_close(close)
