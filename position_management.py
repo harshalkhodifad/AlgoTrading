@@ -69,7 +69,6 @@ class PositionsManager:
         logger.info("REGULAR ENTRY:")
         for position in positions.values():
             if position.strategy.value == Strategy.REGULAR.value:
-                logger.info(position.summary)
                 if position.script.option_type.value == OptionType.CE.value:
                     ce_entries += 1
                     if position.exit_reason != "Square Off":
@@ -116,7 +115,6 @@ class PositionsManager:
         logger.info("REVISED 1 ENTRY:")
         for position in positions.values():
             if position.strategy.value == Strategy.REVISED_1.value:
-                logger.info(position.summary)
                 if position.script.option_type.value == OptionType.CE.value:
                     ce_entries += 1
                     if position.exit_reason != "Square Off":
@@ -163,7 +161,6 @@ class PositionsManager:
         logger.info("REVISED 2 ENTRY:")
         for position in positions.values():
             if position.strategy.value == Strategy.REVISED_2.value:
-                logger.info(position.summary)
                 if position.script.option_type.value == OptionType.CE.value:
                     ce_entries += 1
                     if position.exit_reason != "Square Off":
@@ -198,7 +195,7 @@ class PositionsManager:
         logger.info("\n\n\n" + now.strftime("%Y-%m-%d") + " FINAL SUMMARY: ")
         logger.info(f"Gross PnL: {total_gross_pnl}, Charges: {total_charges}, "
                     f"Net PnL: {total_gross_pnl - total_charges}, Positive trades: {total_positive}, "
-                    f"Negative trades: {total_negative}\n\n\n\n\n\n\n\n")
+                    f"Negative trades: {total_negative}, Total margin used: {margin.max}\n\n\n\n\n\n\n\n")
 
     @staticmethod
     def save_db():
