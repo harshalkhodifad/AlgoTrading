@@ -169,8 +169,8 @@ def main():
     logger.info("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
     we = WorkflowExecutor(broker, position_manager)
     signal.signal(signal.SIGINT, we.close_websocket)
-    signal.signal(signal.SIGTERM, we.close_websocket)
-    signal.signal(signal.SIGKILL, we.close_websocket)
+    # signal.signal(signal.SIGTERM, we.close_websocket)
+    # signal.signal(signal.SIGKILL, we.close_websocket)
     we.start()
     logger.info("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 
