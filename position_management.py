@@ -64,7 +64,7 @@ class PositionsManager:
         charges = 0
 
         logger.info("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
-        logger.info(now.strftime("%Y-%m-d") + " Summary: \n\n\n")
+        logger.info(now.strftime("%Y-%m-%d") + " Summary: \n\n\n")
         logger.info("REGULAR ENTRY:")
         for position in positions.values():
             if position.strategy.value == Strategy.REGULAR.value:
@@ -194,9 +194,7 @@ class PositionsManager:
         total_positive += ce_positive + pe_positive
         total_negative += ce_negative + pe_negative
 
-        logger.info(now.strftime("%Y-%m-d") + " FINAL SUMMARY: ")
+        logger.info("\n\n\n" + now.strftime("%Y-%m-%d") + " FINAL SUMMARY: ")
         logger.info(f"Gross PnL: {total_gross_pnl}, Charges: {total_charges}, "
                     f"Net PnL: {total_gross_pnl - total_charges}, Positive trades: {total_positive}, "
-                    f"Negative trades: {total_negative}")
-        logger.info("\n\n\n\n\n\n\n\n\n")
-
+                    f"Negative trades: {total_negative}\n\n\n\n\n\n\n\n")

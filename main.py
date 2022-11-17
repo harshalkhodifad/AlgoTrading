@@ -65,6 +65,7 @@ class WorkflowExecutor:
         print(self.nfo_data)
         self.broker.subscribe(self.nfo_data, callback)
         # feed_dummy_data(callback)
+        # self.position_manager.print_summary()
 
         while not exit_signal:
             time.sleep(1)

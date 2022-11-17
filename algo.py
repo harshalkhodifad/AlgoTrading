@@ -94,7 +94,7 @@ class Algorithm:
 
     def update_position(self, script: Script):
         now = datetime.datetime.now()
-        position = self.position_manager.get_position(script)
+        position = self.position_manager.get_position(script.symbol)
         if position is None or position.closed:
             return None
         ltp = script.ltp
