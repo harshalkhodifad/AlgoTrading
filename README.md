@@ -70,6 +70,7 @@ ssh -i ~/Downloads/AlgoTrading.pem ubuntu@65.0.106.209
 Reference - https://www.hostinger.in/tutorials/how-to-use-rsync
 ```commandline
 rsync -avhzrP -e "ssh -i ~/Downloads/AlgoTrading.pem" ubuntu@65.0.106.209:~/AlgoTrading/resources/eq_data/ ~/Desktop/Projects/AlgoTrading/resources/eq_data/
+rsync -avhzrP -e "ssh -i ~/Downloads/AlgoTrading.pem" ubuntu@65.0.106.209:~/AlgoTrading/algo-trading-* ~/Desktop/Projects/AlgoTrading/
 ```
 
 ## Logic
