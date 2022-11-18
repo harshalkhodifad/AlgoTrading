@@ -129,7 +129,7 @@ class Position:
 
     @property
     def charges(self):
-        return 40 * self.qty
+        return 65 * self.qty
 
     @property
     def profit(self):
