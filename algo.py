@@ -22,6 +22,7 @@ class Algorithm:
         if square_off_in_progress:
             return
         scrpt = Script(instrument=script.get('instrument'), subscription_details=script)
+        alice_update = script
         script_lock = None
         now = datetime.datetime.now()
         try:
@@ -32,6 +33,8 @@ class Algorithm:
             script_lock.acquire()
             global_lock.release() if global_lock.locked() else None
 
+            print("Alice update: ")
+            print(alice_update)
             script = self.position_manager.update_script(scrpt)
 
             if self.should_create_new_position(script):
@@ -71,6 +74,7 @@ class Algorithm:
             if lower_end <= ltp <= upper_end:
                 position = self.create_new_position(script, ltp, now, 1, Strategy.REGULAR)
                 logger.info(position.summary)
+                print(position.summary)
                 return position
         elif script.low >= fail_low:
             # REVISED 1
@@ -80,6 +84,7 @@ class Algorithm:
             if lower_end <= ltp <= upper_end:
                 position = self.create_new_position(script, ltp, now, 1, Strategy.REVISED_1)
                 logger.info(position.summary)
+                print(position.summary)
                 return position
         else:
             # REVISED 2
@@ -89,6 +94,7 @@ class Algorithm:
             if lower_end <= ltp <= upper_end:
                 position = self.create_new_position(script, ltp, now, 1, Strategy.REVISED_2)
                 logger.info(position.summary)
+                print(position.summary)
                 return position
         return None
 
@@ -129,6 +135,7 @@ class Algorithm:
         if ltp <= sl:
             self.close_position(position, ltp, now, exit_reason)
             logger.info(position.summary)
+            print(position.summary)
             return position
 
         return None
@@ -143,6 +150,7 @@ class Algorithm:
             if not position.closed:
                 self.close_position(position, position.script.ltp, now, "Square Off")
                 logger.info(position.summary)
+                print(position.summary)
 
     def create_new_position(self, script: Script, price: float, now: datetime.datetime, qty: int, stg: Strategy):
         p = Position(script, price, now, qty, stg)
