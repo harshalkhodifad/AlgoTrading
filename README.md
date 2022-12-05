@@ -21,6 +21,7 @@ pip3 install --upgrade pip
 pip install -r requirements.txt
 deactivate
 source venv/bin/activate
+# python3 main.py
 ```
 
 ## Cron Setup: https://www.digitalocean.com/community/tutorials/how-to-use-cron-to-automate-tasks-ubuntu-1804
