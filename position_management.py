@@ -58,7 +58,6 @@ class PositionsManager:
     @staticmethod
     def print_summary():
         now = datetime.datetime.now()
-        positions = Position.get_db()
         total_gross_pnl = 0
         total_charges = 0
         total_positive = 0
@@ -79,28 +78,29 @@ class PositionsManager:
         logger.info("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
         logger.info(now.strftime("%Y-%m-%d") + " Summary: \n\n\n")
         logger.info("REGULAR ENTRY:")
-        for position in positions.values():
-            if position.strategy.value == Strategy.REGULAR.value:
-                if position.script.option_type.value == OptionType.CE.value:
-                    ce_entries += 1
-                    if position.exit_reason != "Square Off":
-                        ce_exits += 1
-                    if position.gross_pnl >= 0:
-                        ce_positive += 1
+        for positions in position_archives.values():
+            for position in positions:
+                if position.strategy.value == Strategy.REGULAR.value:
+                    if position.script.option_type.value == OptionType.CE.value:
+                        ce_entries += 1
+                        if position.exit_reason != "Square Off":
+                            ce_exits += 1
+                        if position.gross_pnl >= 0:
+                            ce_positive += 1
+                        else:
+                            ce_negative += 1
                     else:
-                        ce_negative += 1
-                else:
-                    pe_entries += 1
-                    if position.exit_reason != "Square Off":
-                        pe_exits += 1
+                        pe_entries += 1
+                        if position.exit_reason != "Square Off":
+                            pe_exits += 1
 
-                    if position.gross_pnl >= 0:
-                        pe_positive += 1
-                    else:
-                        pe_negative += 1
+                        if position.gross_pnl >= 0:
+                            pe_positive += 1
+                        else:
+                            pe_negative += 1
 
-                gross_pnl += position.gross_pnl
-                charges += position.charges
+                    gross_pnl += position.gross_pnl
+                    charges += position.charges
         logger.info(f"Total trades: {ce_entries + pe_entries}")
         logger.info(f"Total CE Entries: {ce_entries}, Exits: {ce_exits}, SquareOff: {ce_entries - ce_exits}")
         logger.info(f"Total PE Entries: {pe_entries}, Exits: {pe_exits}, SquareOff: {pe_entries - pe_exits}")
@@ -125,28 +125,29 @@ class PositionsManager:
         charges = 0
         logger.info("\n\n\n\n\n\n\n\n")
         logger.info("REVISED 1 ENTRY:")
-        for position in positions.values():
-            if position.strategy.value == Strategy.REVISED_1.value:
-                if position.script.option_type.value == OptionType.CE.value:
-                    ce_entries += 1
-                    if position.exit_reason != "Square Off":
-                        ce_exits += 1
-                    if position.gross_pnl >= 0:
-                        ce_positive += 1
+        for positions in position_archives.values():
+            for position in positions:
+                if position.strategy.value == Strategy.REVISED_1.value:
+                    if position.script.option_type.value == OptionType.CE.value:
+                        ce_entries += 1
+                        if position.exit_reason != "Square Off":
+                            ce_exits += 1
+                        if position.gross_pnl >= 0:
+                            ce_positive += 1
+                        else:
+                            ce_negative += 1
                     else:
-                        ce_negative += 1
-                else:
-                    pe_entries += 1
-                    if position.exit_reason != "Square Off":
-                        pe_exits += 1
+                        pe_entries += 1
+                        if position.exit_reason != "Square Off":
+                            pe_exits += 1
 
-                    if position.gross_pnl >= 0:
-                        pe_positive += 1
-                    else:
-                        pe_negative += 1
+                        if position.gross_pnl >= 0:
+                            pe_positive += 1
+                        else:
+                            pe_negative += 1
 
-                gross_pnl += position.gross_pnl
-                charges += position.charges
+                    gross_pnl += position.gross_pnl
+                    charges += position.charges
         logger.info(f"Total trades: {ce_entries + pe_entries}")
         logger.info(f"Total CE Entries: {ce_entries}, Exits: {ce_exits}, SquareOff: {ce_entries - ce_exits}")
         logger.info(f"Total PE Entries: {pe_entries}, Exits: {pe_exits}, SquareOff: {pe_entries - pe_exits}")
@@ -171,28 +172,76 @@ class PositionsManager:
         charges = 0
         logger.info("\n\n\n\n\n\n\n\n")
         logger.info("REVISED 2 ENTRY:")
-        for position in positions.values():
-            if position.strategy.value == Strategy.REVISED_2.value:
-                if position.script.option_type.value == OptionType.CE.value:
-                    ce_entries += 1
-                    if position.exit_reason != "Square Off":
-                        ce_exits += 1
-                    if position.gross_pnl >= 0:
-                        ce_positive += 1
+        for positions in position_archives.values():
+            for position in positions:
+                if position.strategy.value == Strategy.REVISED_2.value:
+                    if position.script.option_type.value == OptionType.CE.value:
+                        ce_entries += 1
+                        if position.exit_reason != "Square Off":
+                            ce_exits += 1
+                        if position.gross_pnl >= 0:
+                            ce_positive += 1
+                        else:
+                            ce_negative += 1
                     else:
-                        ce_negative += 1
-                else:
-                    pe_entries += 1
-                    if position.exit_reason != "Square Off":
-                        pe_exits += 1
+                        pe_entries += 1
+                        if position.exit_reason != "Square Off":
+                            pe_exits += 1
 
-                    if position.gross_pnl >= 0:
-                        pe_positive += 1
+                        if position.gross_pnl >= 0:
+                            pe_positive += 1
+                        else:
+                            pe_negative += 1
+
+                    gross_pnl += position.gross_pnl
+                    charges += position.charges
+        logger.info(f"Total trades: {ce_entries + pe_entries}")
+        logger.info(f"Total CE Entries: {ce_entries}, Exits: {ce_exits}, SquareOff: {ce_entries - ce_exits}")
+        logger.info(f"Total PE Entries: {pe_entries}, Exits: {pe_exits}, SquareOff: {pe_entries - pe_exits}")
+        logger.info(f"Total CE Positive trades: {ce_positive}, CE Negative trades: {ce_negative}")
+        logger.info(f"Total PE Positive trades: {pe_positive}, PE Negative trades: {pe_negative}")
+        logger.info(f"Gross PnL: {gross_pnl}, Charges: {charges}, Net PnL: {gross_pnl - charges}")
+        total_gross_pnl += gross_pnl
+        total_charges += charges
+        total_positive += ce_positive + pe_positive
+        total_negative += ce_negative + pe_negative
+
+        ce_entries = 0
+        pe_entries = 0
+        ce_exits = 0
+        pe_exits = 0
+        ce_positive = 0
+        pe_positive = 0
+        ce_negative = 0
+        pe_negative = 0
+
+        gross_pnl = 0
+        charges = 0
+        logger.info("\n\n\n\n\n\n\n\n")
+        logger.info("GAP ENTRY:")
+        for positions in position_archives.values():
+            for position in positions:
+                if position.strategy.value == Strategy.GAP.value:
+                    if position.script.option_type.value == OptionType.CE.value:
+                        ce_entries += 1
+                        if position.exit_reason != "Square Off":
+                            ce_exits += 1
+                        if position.gross_pnl >= 0:
+                            ce_positive += 1
+                        else:
+                            ce_negative += 1
                     else:
-                        pe_negative += 1
+                        pe_entries += 1
+                        if position.exit_reason != "Square Off":
+                            pe_exits += 1
 
-                gross_pnl += position.gross_pnl
-                charges += position.charges
+                        if position.gross_pnl >= 0:
+                            pe_positive += 1
+                        else:
+                            pe_negative += 1
+
+                    gross_pnl += position.gross_pnl
+                    charges += position.charges
         logger.info(f"Total trades: {ce_entries + pe_entries}")
         logger.info(f"Total CE Entries: {ce_entries}, Exits: {ce_exits}, SquareOff: {ce_entries - ce_exits}")
         logger.info(f"Total PE Entries: {pe_entries}, Exits: {pe_exits}, SquareOff: {pe_entries - pe_exits}")
@@ -212,5 +261,5 @@ class PositionsManager:
     @staticmethod
     def save_db():
         file_name = datetime.datetime.now().strftime("resources/positions_data/positions_data-%Y-%m-%d.pickle")
-        write_file(Position.get_db(), file_name)
+        write_file(position_archives, file_name)
         logger.info(f"Write DB file: {file_name} to disk")
