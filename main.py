@@ -4,7 +4,7 @@ import logging
 logger = logging.getLogger("WorkflowExecutor")
 logger.info("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
 logger.info("Starting...")
-
+print("Starting")
 
 import datetime
 import signal
