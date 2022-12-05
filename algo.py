@@ -1,4 +1,5 @@
 import datetime
+import math
 import time
 import logging
 from typing import Any
@@ -35,12 +36,14 @@ class Algorithm:
 
             print("Alice update: ")
             print(alice_update)
+
             script = self.position_manager.update_script(scrpt)
 
-            if self.should_create_new_position(script):
-                self.create_position(script)
-            else:
-                self.update_position(script)
+            if not scrpt.is_equity:
+                if self.should_create_new_position(script):
+                    self.create_position(script)
+                else:
+                    self.update_position(script)
 
             script_lock.release() if script_lock.locked() else None
         except Exception as e:
@@ -60,13 +63,38 @@ class Algorithm:
         else:
             return True
 
+    def allow_regular_entries(self):
+        now = datetime.datetime.now()
+        if (now.hour * 60 + now.minute) >= (9*60 + 30):
+            return True
+        else:
+            return False
+
     def create_position(self, script: Script):
         now = datetime.datetime.now()
         close = script.close
         ltp = script.ltp
         fail_low = round_off(close * (1 - 0.18), script.tick_size)
 
-        if script.low >= close:
+        if script.open == script.low \
+                and script.close * 1.1 <= script.open <= script.close * 1.24:
+            # GAP
+            eligible = False
+            if script.option_type == OptionType.CE and script.eq_script.low >= script.eq_script.open * 0.994:
+                eligible = True
+            elif script.option_type == OptionType.PE and script.eq_script.high <= script.eq_script.open * 1.006:
+                eligible = True
+
+            if eligible and not self.position_manager.get_archived_positions(script.symbol):
+                entry = round_off(script.low * 1.05, script.tick_size)
+                lower_end = entry - RANGE_TOLERANCE_TICKS * script.tick_size
+                upper_end = entry + RANGE_TOLERANCE_TICKS * script.tick_size
+                if lower_end <= ltp <= upper_end:
+                    position = self.create_new_position(script, ltp, now, 1, Strategy.GAP)
+                    logger.info(position.summary)
+                    print(position.summary)
+                    return position
+        elif self.allow_regular_entries() and script.low >= close:
             # REGULAR
             entry = round_off(close * (1 + 0.095), script.tick_size)
             lower_end = entry - RANGE_TOLERANCE_TICKS * script.tick_size
@@ -76,7 +104,7 @@ class Algorithm:
                 logger.info(position.summary)
                 print(position.summary)
                 return position
-        elif script.low >= fail_low:
+        elif self.allow_regular_entries() and script.low >= fail_low:
             # REVISED 1
             entry = round_off(script.low * (1 + 0.10), script.tick_size)
             lower_end = entry - RANGE_TOLERANCE_TICKS * script.tick_size
@@ -86,7 +114,7 @@ class Algorithm:
                 logger.info(position.summary)
                 print(position.summary)
                 return position
-        else:
+        elif self.allow_regular_entries():
             # REVISED 2
             entry = round_off(script.low * (1 + 0.12), script.tick_size)
             lower_end = entry - RANGE_TOLERANCE_TICKS * script.tick_size
@@ -129,8 +157,10 @@ class Algorithm:
             exit_reason = f"Achieved high of {position.high} after entry which is >= {t1 * (1 + 0.01)} " \
                           f"(t1({t1}) + 1% tolerance) so, t1 became sl and price touched sl({sl})"
         else:
-            sl = round_off(position.entry_price * (1 - 0.05), position.script.tick_size)
-            exit_reason = f"Price touched hard sl(entry - 5%): {sl}"
+            sl = round_off(position.entry_price * (1 - 0.05)
+                           if position.strategy != Strategy.GAP else position.entry_price * (1 - 0.065),
+                           position.script.tick_size)
+            exit_reason = f"Price touched hard sl: {sl}"
 
         if ltp <= sl:
             self.close_position(position, ltp, now, exit_reason)
@@ -153,7 +183,7 @@ class Algorithm:
                 print(position.summary)
 
     def create_new_position(self, script: Script, price: float, now: datetime.datetime, qty: int, stg: Strategy):
-        p = Position(script, price, now, qty, stg)
+        p = Position(script, price, now, qty, stg, bool(self.position_manager.get_archived_positions(script.symbol)))
         self.position_manager.add_position(p)
         try:
             global_lock.acquire()
@@ -164,8 +194,7 @@ class Algorithm:
             global_lock.release() if global_lock.locked() else None
         return p
 
-    @staticmethod
-    def close_position(position, price, now, exit_reason):
+    def close_position(self, position, price, now, exit_reason):
         if not position.closed:
             position.closed = True
             position.exit_price = price
@@ -175,6 +204,7 @@ class Algorithm:
                 global_lock.acquire()
                 margin.current += position.margin
                 margin.max = max(margin.current, margin.max)
+                self.position_manager.archive_position(position)
                 global_lock.release() if global_lock.locked() else None
             finally:
                 global_lock.release() if global_lock.locked() else None

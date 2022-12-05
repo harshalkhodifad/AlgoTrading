@@ -50,11 +50,16 @@ class WorkflowExecutor:
         self.broker = brker
         self.position_manager = positionManager
         self.nfo_data, self.eq_set, self.expiry_date = None, None, None
-        self._initialize_db()
+        self.execution_started = False
 
     def start(self):
+        while not self.should_start():
+            time.sleep(1)
+            logger.info("Waiting to start")
+        self._initialize_db()
         while not self.should_execute():
             time.sleep(1)
+            logger.info("Waiting to execute")
         self.execute()
 
     def execute(self):
@@ -64,6 +69,7 @@ class WorkflowExecutor:
         # self.broker.subscribe([self.broker.get_instrument_by_symbol("NFO", "AXISBANK22NOV880CE")], callback)
         print(self.nfo_data)
         self.broker.subscribe(self.nfo_data, callback)
+        self.execution_started = True
         # feed_dummy_data(callback)
         # self.position_manager.print_summary()
 
@@ -75,7 +81,14 @@ class WorkflowExecutor:
 
     def should_execute(self):
         now = datetime.datetime.now()
-        if (now.hour * 60 + now.minute) >= (9*60 + 20):
+        if (now.hour * 60 + now.minute) >= (9*60 + 17):
+            return True
+        else:
+            return False
+
+    def should_start(self):
+        now = datetime.datetime.now()
+        if (now.hour * 60 + now.minute) >= (8*60 + 30):
             return True
         else:
             return False
@@ -102,8 +115,11 @@ class WorkflowExecutor:
         exit_signal = True
         logger.info("Closing web socket")
         time.sleep(3)
-        self.broker.unsubscribe(self.nfo_data)
-        self.broker.client.close_websocket()
+        if self.execution_started:
+            self.broker.unsubscribe(self.nfo_data)
+            self.broker.client.close_websocket()
+        logger.info("Web socket closed")
+        sys.exit()
 
     def _initialize_db(self):
         logger.info("Fetching F&O Data")
@@ -129,6 +145,7 @@ class WorkflowExecutor:
             self.position_manager.get_or_create_script_lock(ce_script.symbol)
             self.position_manager.get_or_create_script_lock(pe_script.symbol)
 
+            updated_nfo_data.append(eq_instrument)
             updated_nfo_data.append(ce_instrument)
             updated_nfo_data.append(pe_instrument)
         # TO CHANGE - Remove banned script

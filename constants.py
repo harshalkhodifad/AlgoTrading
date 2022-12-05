@@ -28,6 +28,7 @@ class Strategy(enum.Enum):
     REGULAR = "REGULAR"
     REVISED_1 = "REVISED_1"
     REVISED_2 = "REVISED_2"
+    GAP = "GAP"
 
 
 class Exchanges(enum.Enum):

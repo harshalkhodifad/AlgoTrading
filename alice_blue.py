@@ -255,6 +255,8 @@ class AliceBlue:
         return session_id
 
     def __extract_tick_data(self, data):
+        print("Alice data from API: ")
+        print(data)
         if ("tk" in data):  # Token
             data["instrument"] = self.get_instrument_by_token(data.pop("e"), int(data.pop("tk")))
         if ("ts" in data):  # Symbol
