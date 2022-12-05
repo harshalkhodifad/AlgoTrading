@@ -28,7 +28,7 @@ from constants import *
 
 from aliceblue_v2 import Alice
 
-credential_index = 1
+credential_index = 0
 if len(sys.argv) > 1:
     credential_index = int(sys.argv[1])
 
@@ -72,11 +72,6 @@ class WorkflowExecutor:
             # print("Running")
             if self.exit_if_required():
                 break
-
-        # fr = datetime.datetime(2022, 10, 28)
-        # to = datetime.datetime(2022, 10, 29)
-        # x = self.broker.client.historical_data(self.broker.client.get_instrument_by_symbol("NFO", "AXISBANK22NOV910CE"), fr, to, HistoricalDataType.Minute)
-        # print(x)
 
     def should_execute(self):
         now = datetime.datetime.now()
