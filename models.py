@@ -50,6 +50,8 @@ class Script:
                 "ltp": script.ltp,
                 "low": script.low,
                 "high": script.high,
+                "open": script.open,
+                "close": script.close,
                 "bid": script.bid,
                 "ask": script.ask,
                 "bid_q": script.bid_q,
@@ -70,7 +72,11 @@ class Script:
             else self.instrument.symbol
 
     @property
-    def eq_script(self):
+    def is_equity(self):
+        return self.instrument.symbol.endswith('-EQ')
+
+    @property
+    def eq_script(self) -> Script:
         return scripts_db.get(self.eq_symbol)
 
     @property
@@ -93,7 +99,8 @@ class Script:
 
 class Position:
 
-    def __init__(self, script: Script, entry_price, entry_time: datetime.datetime, qty, strategy: Strategy):
+    def __init__(self, script: Script, entry_price, entry_time: datetime.datetime, qty, strategy: Strategy,
+                 reentry: bool = False):
         self.script = script
         self.low = entry_price
         self.high = entry_price
@@ -106,6 +113,7 @@ class Position:
         self.qty = qty
         self.strategy = strategy
         self.closed = False
+        self.reentry = False
 
     @staticmethod
     def get_db():
@@ -147,9 +155,13 @@ class Position:
         return 0.0
 
     @property
+    def entry_string(self):
+        return "Re-entry" if self.reentry else "Entry"
+
+    @property
     def summary(self):
         if not self.closed:
-            return f"{self.strategy.value} Entry {self.script.symbol} - Entry Price: {self.entry_price}, " \
+            return f"{self.strategy.value} {self.entry_string} {self.script.symbol} - Entry Price: {self.entry_price}, " \
                    f"CLOSE: {self.script.close}, OPEN: {self.script.open}, LOW: {self.script.low}, " \
                    f"HIGH: {self.script.high}, %CHANGE: {self.script.change_percentage}, " \
                    f"LOT: {self.script.lot_size}, MARGIN USED: {self.margin}\n"

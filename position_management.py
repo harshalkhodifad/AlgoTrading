@@ -1,6 +1,7 @@
 import datetime
 import logging
 import threading
+from typing import List
 
 from models import Script, Position
 from variables import *
@@ -28,6 +29,17 @@ class PositionsManager:
     def add_position(position: Position):
         positions_db[position.script.symbol] = position
         return positions_db[position.script.symbol]
+
+    @staticmethod
+    def get_archived_positions(symbol: str) -> List[Position]:
+        return position_archives.get(symbol, [])
+
+    @staticmethod
+    def archive_position(position: Position):
+        positions_db[position.script.symbol] = None
+        positions = position_archives.get(position.script.symbol, [])
+        positions.append(position)
+        position_archives[position.script.symbol] = positions
 
     @staticmethod
     def update_script(script: Script) -> Script:

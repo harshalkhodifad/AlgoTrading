@@ -73,6 +73,8 @@ rsync -avhzrP -e "ssh -i ~/Downloads/AlgoTrading.pem" ubuntu@65.0.106.209:~/Algo
 rsync -avhzrP -e "ssh -i ~/Downloads/AlgoTrading.pem" ubuntu@65.0.106.209:~/AlgoTrading/algo-trading-* ~/Desktop/Projects/AlgoTrading/
 ```
 
+rsync -avhzrP -e "ssh -i ~/Downloads/AlgoTrading.pem" ubuntu@65.0.106.209:~/AlgoTrading/logs/algo-trading-2022-12-01.txt /mnt/c/Users/Lenovo_User/Desktop/SYSTEM\ RESULT/AliceBlue
+
 ## Logic
 
 1. Fetch F&O list

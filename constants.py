@@ -19,12 +19,12 @@ CREDS = [Credentials("720105",
                      "XWovilUdgu7zQrW",
                      "sT0hgWxlQfJ4zK4iIfdHtApvc5VQyM1qSizHos5cDvXXedZK8gOMGrLXKHOi1m7t6DU7qiGP8t4IvulIZJgXv77a66j0PQHtCSL3"),
          Credentials("722413",
-                     "Alice@22",
+                     "Harshal111",
                      "1234",
                      "XUkELqxrJUGsQhg",
                      "bXDSLDcKUnZbjmzLqRpvBdhQfAqBCENZLKquDbapoddmvMmDNiJOCzjutoMZSJCIpiLphaGXJAJjaoaTXqZVecerkAhFVmRRsglj"),
          Credentials("722413",
-                     "Alice@22",
+                     "Harshal111",
                      "1234",
                      "DYRgOIvSvEIaZKl",
                      "BDNgyikQXqNBnarhlkkhpCeJPgsoJoUchhjGzxMeoFnMOCDJggcMceRaFtRmTbOzQgysvVnESoSgzvMjUZAMODvQWCVBXxLOYnzG"), ]
@@ -47,6 +47,7 @@ class Strategy(enum.Enum):
     REGULAR = "REGULAR"
     REVISED_1 = "REVISED_1"
     REVISED_2 = "REVISED_2"
+    GAP = "GAP"
 
 
 class Exchanges(enum.Enum):

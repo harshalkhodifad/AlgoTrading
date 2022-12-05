@@ -5,6 +5,7 @@ script_locks = dict()
 
 scripts_db = dict()
 positions_db = dict()
+position_archives = dict()
 
 
 class Margin:
