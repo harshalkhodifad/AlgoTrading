@@ -34,8 +34,8 @@ class Algorithm:
             script_lock.acquire()
             global_lock.release() if global_lock.locked() else None
 
-            print("Alice update: ")
-            print(alice_update)
+            # print("Alice update: ")
+            # print(alice_update)
 
             script = self.position_manager.update_script(scrpt)
 

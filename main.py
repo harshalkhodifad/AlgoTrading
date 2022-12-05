@@ -67,7 +67,7 @@ class WorkflowExecutor:
         print("Starting trade executions")
         # import ipdb; ipdb.set_trace()
         # self.broker.subscribe([self.broker.get_instrument_by_symbol("NFO", "AXISBANK22NOV880CE")], callback)
-        print(self.nfo_data)
+        # print(self.nfo_data)
         self.broker.subscribe(self.nfo_data, callback)
         self.execution_started = True
         # feed_dummy_data(callback)
